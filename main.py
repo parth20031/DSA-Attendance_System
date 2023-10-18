@@ -27,22 +27,22 @@ while True:
     w=640
     h=486
     frame=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-    # frame2=frame[0:w/4,0:h/2]
-    # frame3=frame[w/4:w/2,0:h/2]
-    # frame4=frame[w/2:3*w/4,0:h/2]
-    # frame5=frame[3*w/4:w,0:h/2]
-    # frame6=frame[0:w/4,h/2:h]
-    # frame7=frame[w/4:w/2,h/2:h]
-    # frame8=frame[w/2:3*w/4,h/2:h]
-    # frame9=frame[3*w/4:w,h/2:h]
-    # frame2=cv2.resize(frame2,(640,486))
-    # frame3=cv2.resize(frame3,(640,486))
-    # frame4=cv2.resize(frame4,(640,486))
-    # frame5=cv2.resize(frame5,(640,486))
-    # frame6=cv2.resize(frame6,(640,486))
-    # frame7=cv2.resize(frame7,(640,486))
-    # frame8=cv2.resize(frame8,(640,486))
-    # frame9=cv2.resize(frame9,(640,486))
+    frame2=frame[0:w/4,0:h/2]
+    frame3=frame[w/4:w/2,0:h/2]
+    frame4=frame[w/2:3*w/4,0:h/2]
+    frame5=frame[3*w/4:w,0:h/2]
+    frame6=frame[0:w/4,h/2:h]
+    frame7=frame[w/4:w/2,h/2:h]
+    frame8=frame[w/2:3*w/4,h/2:h]
+    frame9=frame[3*w/4:w,h/2:h]
+    frame2=cv2.resize(frame2,(640,486))
+    frame3=cv2.resize(frame3,(640,486))
+    frame4=cv2.resize(frame4,(640,486))
+    frame5=cv2.resize(frame5,(640,486))
+    frame6=cv2.resize(frame6,(640,486))
+    frame7=cv2.resize(frame7,(640,486))
+    frame8=cv2.resize(frame8,(640,486))
+    frame9=cv2.resize(frame9,(640,486))
 
     # ret2,frame2=cap.read()
     # frame2=cv2.resize(frame2,(640,486))
@@ -63,29 +63,29 @@ while True:
     allFacesInFrame=face_recognition.face_locations(frame)
     encodeAllFaces=face_recognition.face_encodings(frame,allFacesInFrame)
 
-    # allFacesInFrame2=face_recognition.face_locations(frame2)
-    # encodeAllFaces2=face_recognition.face_encodings(frame2,allFacesInFrame2)
+    allFacesInFrame2=face_recognition.face_locations(frame2)
+    encodeAllFaces2=face_recognition.face_encodings(frame2,allFacesInFrame2)
 
-    # allFacesInFrame3=face_recognition.face_locations(frame3)
-    # encodeAllFaces3=face_recognition.face_encodings(frame3,allFacesInFrame3)
+    allFacesInFrame3=face_recognition.face_locations(frame3)
+    encodeAllFaces3=face_recognition.face_encodings(frame3,allFacesInFrame3)
 
-    # allFacesInFrame4=face_recognition.face_locations(frame4)
-    # encodeAllFaces4=face_recognition.face_encodings(frame4,allFacesInFrame4)
+    allFacesInFrame4=face_recognition.face_locations(frame4)
+    encodeAllFaces4=face_recognition.face_encodings(frame4,allFacesInFrame4)
 
-    # allFacesInFrame5=face_recognition.face_locations(frame5)
-    # encodeAllFaces5=face_recognition.face_encodings(frame5,allFacesInFrame5)
+    allFacesInFrame5=face_recognition.face_locations(frame5)
+    encodeAllFaces5=face_recognition.face_encodings(frame5,allFacesInFrame5)
 
-    # allFacesInFrame6=face_recognition.face_locations(frame6)
-    # encodeAllFaces6=face_recognition.face_encodings(frame6,allFacesInFrame6)
+    allFacesInFrame6=face_recognition.face_locations(frame6)
+    encodeAllFaces6=face_recognition.face_encodings(frame6,allFacesInFrame6)
 
-    # allFacesInFrame7=face_recognition.face_locations(frame7)
-    # encodeAllFaces7=face_recognition.face_encodings(frame7,allFacesInFrame7)
+    allFacesInFrame7=face_recognition.face_locations(frame7)
+    encodeAllFaces7=face_recognition.face_encodings(frame7,allFacesInFrame7)
 
-    # allFacesInFrame8=face_recognition.face_locations(frame8)
-    # encodeAllFaces8=face_recognition.face_encodings(frame8,allFacesInFrame8)
+    allFacesInFrame8=face_recognition.face_locations(frame8)
+    encodeAllFaces8=face_recognition.face_encodings(frame8,allFacesInFrame8)
 
-    # allFacesInFrame9=face_recognition.face_locations(frame9)
-    # encodeAllFaces9=face_recognition.face_encodings(frame9,allFacesInFrame9)
+    allFacesInFrame9=face_recognition.face_locations(frame9)
+    encodeAllFaces9=face_recognition.face_encodings(frame9,allFacesInFrame9)
     
     
     
@@ -118,7 +118,7 @@ while True:
         # min=min(min,min3)
         
         # if min==min2 and min2==min3 and matches[min]:
-        if  matches[min]:
+        if  facedis[min]<0.415:
 
             font=cv2.FONT_HERSHEY_SIMPLEX
     # index=0

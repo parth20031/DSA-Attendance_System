@@ -10,14 +10,17 @@ RollList=[]
 for image in studentImg:
     imgList.append(cv2.imread(os.path.join("student_details",image)))
     RollList.append(image[:-4])
-print(RollList)
+# print(RollList)
 
 
 
 
 def encodes(imgList):
     encodings=[]
+    index=0
     for img in imgList:
+        print(studentImg[index])
+        index+=1
         img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
         encode=face_recognition.face_encodings(img)[0]
         encodings.append(encode)
@@ -26,7 +29,7 @@ def encodes(imgList):
 encodings=encodes(imgList)
 
 encodes=[encodings,RollList]
-file=open("encodings.p","wb")
+file=open("encodings1.p","wb")
 pickle.dump(encodes,file)
 file.close()
 print("done")

@@ -2,8 +2,8 @@ import cv2
 import os
 
 cap=cv2.VideoCapture(0)
-interface=cv2.imread("interface/as2c.jpeg")
-interface=cv2.resize(interface,(1240,680))
+interface=cv2.imread("sample.jpg")
+# interface=cv2.resize(interface,(1240,680))
 
 def draw(event,x,y,flags,param):
     if event==cv2.EVENT_LBUTTONDOWN:
