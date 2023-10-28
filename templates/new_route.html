@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Route</title>
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Eligible Roll Numbers</h1>
+    <div>
+        {% for roll_number in eligible_roll_numbers %}
+            <p>
+                
+                <span>{{ roll_number }}</span>
+                <a href="/send_email">Email</a>
+            </p>
+
+
+        {% endfor %}
+    </div>
+</body>
+</html>

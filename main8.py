@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify,send_file,send_from_directory
+from flask import Flask, render_template, request, jsonify,send_file,send_from_directory,url_for
 from flask import redirect
 
 import cv2
@@ -40,9 +40,10 @@ eligible_roll_numbers = []
 
 
 # MongoDB connection configuration
-mongo_uri = 'mongodb://localhost:27017'  # Replace with your MongoDB connection string
-client = pymongo.MongoClient(mongo_uri)
-db = client['attendance']
+# mongo_uri = 'mongodb://localhost:27017'  # Replace with your MongoDB connection string
+# client = pymongo.MongoClient(mongo_uri)
+# db = client['attendance']
+
 
 # Define the starting and ending roll numbers
 start_roll_number = 220001001
@@ -58,6 +59,19 @@ roll_number_list.extend(extra_roll_numbers)
     # Connect to the MongoDB database
 client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
 db = client['attendance']  # Set the database name to "attendance"
+dbs= client['subjects']
+subjects_collection = dbs['subject_collection']
+
+def load_subjects_from_database():
+    return [subject['name'] for subject in subjects_collection.find()]
+
+# Load subjects from the database into the subjects list when the server starts
+subjects = load_subjects_from_database()
+
+# collection = dbs['my_collection']
+# data = {"key": "value"}
+# collection.insert_one(data)
+
 today_date = datetime.now().strftime("%Y-%m-%d")  # Get the current date in YYYY-MM-DD format
 collection = db[today_date]  # Use the current date as the collection name
 # Create a new collection name for today_data_attendance
@@ -276,8 +290,8 @@ def interface():
 
     return render_template('index.html')
 
-@app.route('/', methods=['POST', 'GET'])
-def home():
+@app.route('/<subjects>/start', methods=['POST', 'GET'])
+def start(subjects):
     return render_template('index.html')
 
 def extract_date_from_collection(collection_name):
@@ -457,6 +471,31 @@ def send_email():
 
     # return render_template('index.html')
 
+# subjects = []
+
+@app.route('/')
+def home():
+    return render_template('index2.html', subjects=subjects)
+
+@app.route('/add_subject', methods=['POST'])
+def add_subject():
+    # subject_name = request.form.get('subject_name')
+    # if subject_name:
+    #     subjects.append(subject_name)
+    # return redirect(url_for('home'))
+    if request.method == 'POST':
+        subject_name = request.form['subject_name']
+        if subject_name not in subjects:
+            subjects_collection = dbs['subject_collection']  # Use a specific collection within the 'subjects' database
+            existing_subject = subjects_collection.find_one({"name": subject_name})
+            if existing_subject is None:
+                subjects_collection.insert_one({'name': subject_name})
+            subjects.append(subject_name)
+    return redirect(url_for('home'))
+
+
+
+# print({subjects})
 
 
 
