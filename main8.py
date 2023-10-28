@@ -472,6 +472,32 @@ def send_email():
     # return render_template('index.html')
 
 # subjects = []
+def create_or_get_database(db_name):
+    # Connect to your MongoDB server
+    client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
+    
+    # Check if the database already exists
+    if db_name in client.list_database_names():
+        return client[db_name]  # Return the existing database
+    else:
+        return client[db_name]  # Create a new database and return it
+    
+def create_or_get_database_with_collection(db_name, collection_name, document):
+    # Connect to your MongoDB server
+    client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
+    
+    # Check if the database already exists
+    if db_name in client.list_database_names():
+        db = client[db_name]  # Return the existing database
+    else:
+        db = client[db_name]  # Create a new database
+        # Add a collection to the new database
+        db.create_collection(collection_name)
+    
+    # Insert the document into the collection
+    db[collection_name].insert_one(document)
+    
+    return db
 
 @app.route('/')
 def home():
@@ -491,6 +517,11 @@ def add_subject():
             if existing_subject is None:
                 subjects_collection.insert_one({'name': subject_name})
             subjects.append(subject_name)
+            db_name = subject_name  # Replace with your desired database name
+            collection_name = "my_collection"  # Replace with your desired collection name
+            document = {"key": "value"}  # Replace with the document you want to insert
+            create_or_get_database_with_collection(db_name, collection_name, document)
+
     return redirect(url_for('home'))
 
 
