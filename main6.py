@@ -264,8 +264,13 @@ def interface():
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+    return render_template('index.html')
 
-#--------------------------------- info1--------------------------------------------------------------------------------
+
+
+@app.route('/docs', methods=['POST', 'GET'])
+def docs():
+     #--------------------------------- info1--------------------------------------------------------------------------------
   if 'input_date' in request.form:
     if request.method == 'POST':
         input_date = request.form['input_date']
@@ -326,11 +331,8 @@ def home():
 
         # Return the matching collection names
         return render_template('matching_collections.html', collections=matching_collections)
-  return render_template('index.html')
-
-@app.route('/docs', methods=['POST', 'GET'])
-def docs():
-     return render_template('docs.html')
+  return render_template('docs.html')
+     
 
 
 if __name__ == "__main__":
