@@ -147,10 +147,11 @@
                       <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/docs">
-                    <div class="modal-body">
-                    <input type="number">
-                    </div>
+                    <form action="/docs" method="post">
+                        <div class="modal-body">
+                            <label for="input_roll">Enter the precentage:</label>
+                            <input type="number" id="input_roll" name="input_roll">
+                        </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary">Save changes</button>

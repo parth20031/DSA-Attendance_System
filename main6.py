@@ -12,6 +12,8 @@ from bson import json_util
 import pandas as pd
 import xlsxwriter
 from io import BytesIO
+from pandas import DataFrame
+
 
 
 app = Flask(__name__)
@@ -266,7 +268,8 @@ def interface():
 def home():
     return render_template('index.html')
 
-
+def extract_date_from_collection(collection_name):
+    return collection_name.split('_attendance_all')[0]
 
 @app.route('/docs', methods=['POST', 'GET'])
 def docs():
@@ -304,33 +307,50 @@ def docs():
             return send_file(excel_output, as_attachment=True, download_name=f'{input_date}_attendance_all.xlsx')
             
         else :
-            print("The attendance is not prsent of that day")
+            print("The attendance is not present of that day")
             return render_template('noattendance.html')
     
     # ----------------------------------info2----------------------------------------------------
+#   elif 'input_roll' in request.form:
   elif 'input_roll' in request.form:
-    if request.method == 'POST':
-        input_roll = request.form['input_roll']
+        # Handle input_roll case
+        if request.method == 'POST':
+            input_roll = request.form['input_roll']
 
-        # Find collections with the specified roll number marked as "Present"
-        matching_collections = []
-        all_collections = db.list_collection_names()
+            # Get all collection names that end with "_attendance_all"
+            all_collections = db.list_collection_names()
+            matching_dates = []  # To store dates where the student was present
 
-        for collection_name in all_collections:
-            # Skip collections that don't end with "_attendance_all"
-            if not collection_name.endswith("_attendance_all"):
-                continue
+            for collection_name in all_collections:
+                if collection_name.endswith('_attendance_all'):
+                    collection = db[collection_name]
+                    if collection.find_one({"roll_number": input_roll, "remark": "Present"}):
+                        date = extract_date_from_collection(collection_name)
+                        matching_dates.append(date)
 
-            # Split the collection name and take the part before "_attendance_all"
-            collection_prefix = collection_name.split("_attendance_all")[0]
+            if matching_dates:
+                # Create a DataFrame to store the matching dates
+                data = {'Dates': matching_dates}
+                df = DataFrame(data)
 
-            collection = db[collection_name]
-            # Check if the roll number is present and marked as "Present" in the collection
-            if collection.find_one({"roll_number": input_roll, "remark": "Present"}):
-                matching_collections.append(collection_prefix)
+                # Create an Excel file from the DataFrame
+                excel_output = BytesIO()
+                writer = pd.ExcelWriter(excel_output, engine='xlsxwriter')
+                df.to_excel(writer, sheet_name='Sheet1', index=False)
+                writer.close()
+                excel_output.seek(0)
 
-        # Return the matching collection names
-        return render_template('matching_collections.html', collections=matching_collections)
+                # Return the Excel file as a downloadable attachment
+                return send_file(excel_output, as_attachment=True, download_name=f'{input_roll}_attendance_dates.xlsx')
+
+            else:
+                return render_template('noattendance.html')
+  elif 'input_percent' in request.form:
+         # Handle input_percent case
+        if request.method == 'POST':
+            input_percent = request.form['input_percent']
+
+ 
   return render_template('docs.html')
      
 
