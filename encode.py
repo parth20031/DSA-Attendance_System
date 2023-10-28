@@ -3,12 +3,12 @@ import cv2
 import pickle
 import face_recognition
 
-studentImg=os.listdir("student_details")
+studentImg=os.listdir("student_details1")
 
 imgList=[]
 RollList=[]
 for image in studentImg:
-    imgList.append(cv2.imread(os.path.join("student_details",image)))
+    imgList.append(cv2.imread(os.path.join("student_details1",image)))
     RollList.append(image[:-4])
 # print(RollList)
 
@@ -29,7 +29,7 @@ def encodes(imgList):
 encodings=encodes(imgList)
 
 encodes=[encodings,RollList]
-file=open("encodings1.p","wb")
+file=open("encodings2.p","wb")
 pickle.dump(encodes,file)
 file.close()
 print("done")

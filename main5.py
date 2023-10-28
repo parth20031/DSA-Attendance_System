@@ -108,7 +108,7 @@ def uploaded_file(filename):
 def interface():
     # cap = cv2.VideoCapture(0)
 
-    file = open("encodings1.p", "rb")
+    file = open("encodings2.p", "rb")
     encodes = pickle.load(file)
     encodings, RollList = encodes
     file.close()
