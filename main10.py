@@ -120,6 +120,7 @@ def create_or_get_collection(db, collection_name):
         return db[collection_name]
     else:
         return db[collection_name]
+    
 def today_date():
     today_date = datetime.now().strftime("%Y-%m-%d")  # Get the current date in YYYY-MM-DD format
     return today_date
@@ -145,7 +146,8 @@ def create_student_info_collection(db):
 # Create a new collection name for today_data_attendance
 
 def create_attendance_collection(db):
-    today_date=today_date()
+    # today_date=today_date()
+    today_date = datetime.now().strftime("%Y-%m-%d")
     today_data_attendance_collection_name = today_date + "_attendance"
     today_data_attendance_collection = db[today_data_attendance_collection_name]
 
@@ -159,7 +161,8 @@ def create_attendance_collection(db):
 def create_attendance_all_collection(db):
 # Create a new collection name for attendance_all
     roll_number_list=generate_roll_numberlist()
-    today_date=today_date()
+    # today_date=today_date()
+    today_date = datetime.now().strftime("%Y-%m-%d")
     attendance_all_collection_name = today_date + "_attendance_all"
     attendance_all_collection = db[attendance_all_collection_name]
 
@@ -211,6 +214,10 @@ def add_subject():
 @app.route('/<subjects>/start', methods=['POST', 'GET'])
 def start(subjects):
     db=access_database(subjects)
+    # today_date=today_date()
+    create_student_info_collection(db)
+    create_attendance_collection(db)
+    create_attendance_all_collection(db)
     
     return render_template('index.html',subjects=subjects)
 
