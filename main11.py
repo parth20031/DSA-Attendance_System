@@ -20,8 +20,6 @@ from flask_mail import Mail
 from flask_mail import Message
 
 
-
-
 app = Flask(__name__)
 
 mail = Mail(app)
@@ -37,12 +35,6 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Define a global variable to store eligible roll numbers
 eligible_roll_numbers = []
 
-
-
-# MongoDB connection configuration
-# mongo_uri = 'mongodb://localhost:27017'  # Replace with your MongoDB connection string
-# client = pymongo.MongoClient(mongo_uri)
-# db = client['attendance']
 
 def access_database(subject_name):
     client = MongoClient('mongodb://localhost:27017/') 
@@ -66,8 +58,6 @@ def generate_roll_numberlist():
 client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
 # db = client['attendance']  # Set the database name to "attendance"
 
-# subjects=<subjects>
-# def access_database({subjects})
 
 dbs= client['subjects']
 subjects_collection = dbs['subject_collection']
@@ -78,15 +68,7 @@ def load_subjects_from_database():
 # Load subjects from the database into the subjects list when the server starts
 subjects = load_subjects_from_database()
 
-# collection = dbs['my_collection']
-# data = {"key": "value"}
-# collection.insert_one(data)
 
-
-
-
-
-# subjects = []
 def create_or_get_database(db_name):
     # Connect to your MongoDB server
     client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
@@ -165,83 +147,6 @@ def create_attendance_collection(db):
     print(today_data_attendance_collection)  
     return today_data_attendance_collection
 
-        # Create the "student_info" collection and insert the roll numbers
-
-
-# Define a function to create and initialize the "attendance_all" collection
-# def create_attendance_all_collection(db):
-# # Create a new collection name for attendance_all
-#     roll_number_list=generate_roll_numberlist()
-#     # today_date=today_date()
-#     today_date = datetime.now().strftime("%Y-%m-%d")
-#     attendance_all_collection_name = today_date + "_attendance_all"
-#     attendance_all_collection = db[attendance_all_collection_name]
-#     print(attendance_all_collection)  
-   
-
-#     # Iterate through the roll numbers and mark them as absent with a timestamp
-#     for roll_number in roll_number_list:
-#         # Check if a document with the same roll number exists
-#         existing_attendance = attendance_all_collection.find_one({"roll_number": roll_number})
-#         if existing_attendance is None:
-#             # Document with the same roll number doesn't exist, so insert it
-#             document = {
-#                 "roll_number": roll_number,
-#                 "timestamp": datetime.now(),
-#                 "remark": "Absent"
-#             }
-#             attendance_all_collection.insert_one(document)
-#             return attendance_all_collection
-            # print(f"Inserted attendance for roll number {roll_number} into the '{attendance_all_collection_name}' collection with 'Absent' status.")
-
-# def interface_database_management(db,roll_value):
-                
-#                 today_data_attendance_collection=create_attendance_collection(db)
-#                 attendance_all_collection=create_attendance_all_collection(db)
-#                 existing_doc = today_data_attendance_collection.find_one({"roll_number": roll_value})
-#                 if existing_doc is None:
-#                     # If not found, insert it into the new collection with timestamp and mark as "Present"
-#                     document = {"roll_number": roll_value, "timestamp": datetime.now(), "remark": "Present"}
-#                     today_data_attendance_collection.insert_one(document)
-                    
-#                     # Check if the roll_value is also present in attendance_all
-#                     existing_attendance_doc = attendance_all_collection.find_one({"roll_number": roll_value})
-#                     if existing_attendance_doc is None:
-#                         # If not found, insert it into attendance_all with the same timestamp and mark as "Present"
-#                         attendance_all_collection.insert_one(document)
-#                     else:
-#                         # If found, update the timestamp and mark as "Present"
-#                         attendance_all_collection.update_one({"roll_number": roll_value}, {"$set": {"timestamp": datetime.now(), "remark": "Present"}})  
-                    
-
-#                 print(roll_value)
-
-# def interface_database_management(db, roll_value):
-#     today_data_attendance_collection = create_attendance_collection(db)
-
-#     if today_data_attendance_collection:
-#         existing_doc = today_data_attendance_collection.find_one({"roll_number": roll_value})
-
-#         if existing_doc is None:
-#             # If not found, insert it into the new collection with timestamp and mark as "Present"
-#             document = {"roll_number": roll_value, "timestamp": datetime.now(), "remark": "Present"}
-#             today_data_attendance_collection.insert_one(document)
-
-#             # Check if the roll_value is also present in attendance_all
-#             attendance_all_collection = create_attendance_all_collection(db)
-#             existing_attendance_doc = attendance_all_collection.find_one({"roll_number": roll_value})
-
-#             if existing_attendance_doc is None:
-#                 # If not found, insert it into attendance_all with the same timestamp and mark as "Present"
-#                 attendance_all_collection.insert_one(document)
-#             else:
-#                 # If found, update the timestamp and mark as "Present"
-#                 attendance_all_collection.update_one(
-#                     {"roll_number": roll_value},
-#                     {"$set": {"timestamp": datetime.now(), "remark": "Present"}}
-#                 )
-
-#     print(roll_value)
 
 def create_attendance_all_collection(db):
     # Create a new collection name for attendance_all
@@ -264,13 +169,13 @@ def create_attendance_all_collection(db):
             "remark": "Absent"
         }
         attendance_all_collection.insert_one(document)
-
     return attendance_all_collection
 
+
 @app.route('/')
-def home():
-    
+def home():    
     return render_template('index2.html', subjects=subjects)
+
 
 @app.route('/add_subject', methods=['POST'])
 def add_subject():
@@ -294,17 +199,10 @@ def add_subject():
     return redirect(url_for('home'))
 
 
-
-
 @app.route('/<subjects>/start', methods=['POST', 'GET'])
-def start(subjects):
-    # db=access_database(subjects)
-    # today_date=today_date()
-    # create_student_info_collection(db)
-    # create_attendance_collection(db)
-    # create_attendance_all_collection(db)
-    
+def start(subjects):   
     return render_template('index.html',subjects=subjects)
+
 
 def extract_date_from_collection(collection_name):
     return collection_name.split('_attendance_all')[0]
@@ -453,13 +351,12 @@ def docs(subjects):
 
     return render_template('docs.html',subjects=subjects)
 
+
 @app.route('/<subjects>/new_route', methods=['GET'])
 def new_route(subjects):
     global eligible_roll_numbers  # Access the global variable
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
-
-            
 
 # Configure email settings for Gmail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -469,6 +366,7 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'cse220001057@iiti.ac.in'  # Your Gmail email address
 # app.config['MAIL_PASSWORD'] =   # Your Gmail email password
 app.config['MAIL_DEFAULT_SENDER'] = 'cse220001057@iiti.ac.in'  # Default sender
+
 
 @app.route('/send_email', methods=['GET', 'POST'])
 def send_email():
@@ -482,8 +380,6 @@ def send_email():
 
         mail.send(msg)
     return 'Email sent successfully!'
-
-    # return render_template('index.html')
 
 
 @app.route('/<subjects>/interface')
@@ -547,20 +443,12 @@ def interface(subjects):
         encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
         parts.append(part)
 
-        # allFacesInFrame = face_recognition.face_locations(frame)
-        # encodeAllFaces = face_recognition.face_encodings(frame, allFacesInFrame)
-
-
         for i in range(len(allFacesInParts)):
             for encodes,faceloc in zip(encodeAllFacesInParts[i],allFacesInParts[i]):
                 facedis = face_recognition.face_distance(encodings, encodes)
 
                 min_index=np.argmin(facedis)
                 if facedis[min_index]<0.6:
-                    # if i==2:
-                    #     i=i-1    
-                    #     parts[i]=cv2.rectangle(parts[i],(faceloc[3],2*w//3+faceloc[0]),(faceloc[1],2*w//3+faceloc[2]),(255,255,0),4)
-                    # else:
                     parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
                     print(facedis[min_index])
                     roll_value=RollList[min_index][:-2]
@@ -584,8 +472,6 @@ def interface(subjects):
                     
 
                 print(roll_value)
-
-                # interface_database_management(db,roll_value)
         
         for i in range(2):
 
@@ -606,37 +492,6 @@ def interface(subjects):
         frame = cv2.resize(frame, (640, 486))
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         interface[116:116 + 486, 127:640 + 127] = frame
-        # for encodes, faceloc in zip(encodeAllFaces, allFacesInFrame):
-        #     # matches = face_recognition.compare_faces(encodings, encodes)
-        #     facedis = face_recognition.face_distance(encodings, encodes)
-        #     interface = cv2.rectangle(interface, (127 + faceloc[3], 116 + faceloc[0]), (127 + faceloc[1], 116 + faceloc[2]), (255, 255, 0), 1)
-            
-        #     min_index = np.argmin(facedis)
-        #     if facedis[min_index]<0.415:
-        #     # if matches[min_index]:
-        #         print(facedis[min_index])
-        #         roll_value = RollList[min_index]
-        #         roll_list_values.append(roll_value)
-
-        #         # Check if the roll_value is not already in today_data_attendance
-        #         existing_doc = today_data_attendance_collection.find_one({"roll_number": roll_value})
-        #         if existing_doc is None:
-        #             # If not found, insert it into the new collection with timestamp and mark as "Present"
-        #             document = {"roll_number": roll_value, "timestamp": datetime.now(), "remark": "Present"}
-        #             today_data_attendance_collection.insert_one(document)
-                    
-        #             # Check if the roll_value is also present in attendance_all
-        #             existing_attendance_doc = attendance_all_collection.find_one({"roll_number": roll_value})
-        #             if existing_attendance_doc is None:
-        #                 # If not found, insert it into attendance_all with the same timestamp and mark as "Present"
-        #                 attendance_all_collection.insert_one(document)
-        #             else:
-        #                 # If found, update the timestamp and mark as "Present"
-        #                 attendance_all_collection.update_one({"roll_number": roll_value}, {"$set": {"timestamp": datetime.now(), "remark": "Present"}})
-
-        #         font = cv2.FONT_HERSHEY_SIMPLEX
-        #         cv2.putText(interface, roll_value, (835 + ((min_index) % 3) * 120, 38 + (min_index // 3) * 22), font, 0.6, [255, 255, 255], 1, cv2.LINE_AA)
-        #         print(roll_value)
         cv2.imshow("interface", interface)
 
         if cv2.waitKey(1) == 27 :
@@ -645,11 +500,7 @@ def interface(subjects):
 
     # cap.release()
     cv2.destroyAllWindows()
-
-
-
     return render_template('index.html',subjects=subjects)
-
 
 
 image=[]
@@ -664,10 +515,10 @@ def upload_file(subjects):
 
     return render_template('upload.html')
 
+
 @app.route('/<subjects>/uploads/<filename>')
 def uploaded_file(subjects,filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
 
 
 if __name__ == "__main__":
