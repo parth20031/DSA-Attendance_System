@@ -151,36 +151,121 @@ def create_attendance_collection(db):
     today_data_attendance_collection_name = today_date + "_attendance"
     today_data_attendance_collection = db[today_data_attendance_collection_name]
 
+    data_to_insert = {
+        "random": "-2",
+        "timestamp": datetime.now(),
+        # "remark": "Present"
+    }
+    
+    # Insert the data into the collection
+    today_data_attendance_collection.insert_one(data_to_insert)
+
     # Add a "remark" column and mark all entries as "Present"
     today_data_attendance_collection.update_many({}, {"$set": {"remark": "Present"}})
+    print(today_data_attendance_collection)  
+    return today_data_attendance_collection
 
         # Create the "student_info" collection and insert the roll numbers
 
 
 # Define a function to create and initialize the "attendance_all" collection
+# def create_attendance_all_collection(db):
+# # Create a new collection name for attendance_all
+#     roll_number_list=generate_roll_numberlist()
+#     # today_date=today_date()
+#     today_date = datetime.now().strftime("%Y-%m-%d")
+#     attendance_all_collection_name = today_date + "_attendance_all"
+#     attendance_all_collection = db[attendance_all_collection_name]
+#     print(attendance_all_collection)  
+   
+
+#     # Iterate through the roll numbers and mark them as absent with a timestamp
+#     for roll_number in roll_number_list:
+#         # Check if a document with the same roll number exists
+#         existing_attendance = attendance_all_collection.find_one({"roll_number": roll_number})
+#         if existing_attendance is None:
+#             # Document with the same roll number doesn't exist, so insert it
+#             document = {
+#                 "roll_number": roll_number,
+#                 "timestamp": datetime.now(),
+#                 "remark": "Absent"
+#             }
+#             attendance_all_collection.insert_one(document)
+#             return attendance_all_collection
+            # print(f"Inserted attendance for roll number {roll_number} into the '{attendance_all_collection_name}' collection with 'Absent' status.")
+
+# def interface_database_management(db,roll_value):
+                
+#                 today_data_attendance_collection=create_attendance_collection(db)
+#                 attendance_all_collection=create_attendance_all_collection(db)
+#                 existing_doc = today_data_attendance_collection.find_one({"roll_number": roll_value})
+#                 if existing_doc is None:
+#                     # If not found, insert it into the new collection with timestamp and mark as "Present"
+#                     document = {"roll_number": roll_value, "timestamp": datetime.now(), "remark": "Present"}
+#                     today_data_attendance_collection.insert_one(document)
+                    
+#                     # Check if the roll_value is also present in attendance_all
+#                     existing_attendance_doc = attendance_all_collection.find_one({"roll_number": roll_value})
+#                     if existing_attendance_doc is None:
+#                         # If not found, insert it into attendance_all with the same timestamp and mark as "Present"
+#                         attendance_all_collection.insert_one(document)
+#                     else:
+#                         # If found, update the timestamp and mark as "Present"
+#                         attendance_all_collection.update_one({"roll_number": roll_value}, {"$set": {"timestamp": datetime.now(), "remark": "Present"}})  
+                    
+
+#                 print(roll_value)
+
+# def interface_database_management(db, roll_value):
+#     today_data_attendance_collection = create_attendance_collection(db)
+
+#     if today_data_attendance_collection:
+#         existing_doc = today_data_attendance_collection.find_one({"roll_number": roll_value})
+
+#         if existing_doc is None:
+#             # If not found, insert it into the new collection with timestamp and mark as "Present"
+#             document = {"roll_number": roll_value, "timestamp": datetime.now(), "remark": "Present"}
+#             today_data_attendance_collection.insert_one(document)
+
+#             # Check if the roll_value is also present in attendance_all
+#             attendance_all_collection = create_attendance_all_collection(db)
+#             existing_attendance_doc = attendance_all_collection.find_one({"roll_number": roll_value})
+
+#             if existing_attendance_doc is None:
+#                 # If not found, insert it into attendance_all with the same timestamp and mark as "Present"
+#                 attendance_all_collection.insert_one(document)
+#             else:
+#                 # If found, update the timestamp and mark as "Present"
+#                 attendance_all_collection.update_one(
+#                     {"roll_number": roll_value},
+#                     {"$set": {"timestamp": datetime.now(), "remark": "Present"}}
+#                 )
+
+#     print(roll_value)
+
 def create_attendance_all_collection(db):
-# Create a new collection name for attendance_all
-    roll_number_list=generate_roll_numberlist()
-    # today_date=today_date()
+    # Create a new collection name for attendance_all
+    roll_number_list = generate_roll_numberlist()
+    # today_date = today_date()
     today_date = datetime.now().strftime("%Y-%m-%d")
     attendance_all_collection_name = today_date + "_attendance_all"
     attendance_all_collection = db[attendance_all_collection_name]
+    print(attendance_all_collection)  
+
+    # Clear the existing data in the collection
+    attendance_all_collection.delete_many({})
 
     # Iterate through the roll numbers and mark them as absent with a timestamp
     for roll_number in roll_number_list:
-        # Check if a document with the same roll number exists
-        existing_attendance = attendance_all_collection.find_one({"roll_number": roll_number})
-        if existing_attendance is None:
-            # Document with the same roll number doesn't exist, so insert it
-            document = {
-                "roll_number": roll_number,
-                "timestamp": datetime.now(),
-                "remark": "Absent"
-            }
-            attendance_all_collection.insert_one(document)
-            # print(f"Inserted attendance for roll number {roll_number} into the '{attendance_all_collection_name}' collection with 'Absent' status.")
+        # Insert each roll number as "Absent" with a timestamp
+        document = {
+            "roll_number": roll_number,
+            "timestamp": datetime.now(),
+            "remark": "Absent"
+        }
+        attendance_all_collection.insert_one(document)
 
-
+    return attendance_all_collection
 
 @app.route('/')
 def home():
@@ -213,11 +298,11 @@ def add_subject():
 
 @app.route('/<subjects>/start', methods=['POST', 'GET'])
 def start(subjects):
-    db=access_database(subjects)
+    # db=access_database(subjects)
     # today_date=today_date()
-    create_student_info_collection(db)
-    create_attendance_collection(db)
-    create_attendance_all_collection(db)
+    # create_student_info_collection(db)
+    # create_attendance_collection(db)
+    # create_attendance_all_collection(db)
     
     return render_template('index.html',subjects=subjects)
 
@@ -401,9 +486,12 @@ def send_email():
     # return render_template('index.html')
 
 
-@app.route('/interface')
-def interface():
+@app.route('/<subjects>/interface')
+def interface(subjects):
     db=access_database(subjects)
+    create_student_info_collection(db)
+    today_data_attendance_collection=create_attendance_collection(db)
+    attendance_all_collection=create_attendance_all_collection(db)
     # cap = cv2.VideoCapture(0)
 
     file = open("encodings2.p", "rb")
@@ -496,6 +584,8 @@ def interface():
                     
 
                 print(roll_value)
+
+                # interface_database_management(db,roll_value)
         
         for i in range(2):
 
@@ -558,7 +648,7 @@ def interface():
 
 
 
-    return render_template('index.html')
+    return render_template('index.html',subjects=subjects)
 
 
 
