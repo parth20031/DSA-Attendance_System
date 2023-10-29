@@ -17,7 +17,7 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="/interface">Take Attendence</a></li>
                     <li>
-                        <a href="/docs">History
+                        <a href="/{{subjects}}/docs">History
                             <!-- <i class="fas fa-caret-down"></i> -->
                         </a>
                         <!-- <ul>
@@ -74,7 +74,7 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="/docs" method="post">
+        <form action="/{{subjects}}/docs" method="post">
         <div class="modal-body">
             <label for="input_date">Select a Date:</label>
             <input type="date" id="input_date" name="input_date">
@@ -109,7 +109,7 @@
                       <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/docs" method="post">
+                    <form action="/{{subjects}}/docs" method="post">
                     <div class="modal-body">
                         <label for="input_roll">Select a Roll Number:</label>
                         <input type="number" id="input_roll" name="input_roll">
@@ -147,7 +147,7 @@
                       <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/docs" method="post">
+                    <form action="/{{subjects}}/docs" method="post">
                         <div class="modal-body">
                             <label for="input_percent">Enter the precentage:</label>
                             <input type="number" id="input_percent" name="input_percent">
