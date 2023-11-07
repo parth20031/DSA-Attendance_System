@@ -6,6 +6,16 @@
     <title>Subjects</title>
 </head>
 <body>
+    <div class="container">
+        <!-- Check if the user is authenticated -->
+        {% if is_authenticated %}
+            <p>Hello, {{ session['name'] }}!</p>
+            <a href="/logout"><button>Logout</button></a>
+        {% else %}
+            <a href="/login"><button>Login</button></a>
+        {% endif %}
+    </div>
+
     <h1>Subjects</h1>
     <ul>
         {% for subject in subjects %}

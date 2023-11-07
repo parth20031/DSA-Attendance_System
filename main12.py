@@ -21,8 +21,36 @@ from flask_mail import Message
 
 app = Flask(__name__)
 
+
+app.config['SECRET_KEY'] = "tsfyguaistyatuis589566875623568956"
+app.config['MAIL_SERVER'] = "smtp.googlemail.com"
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = "deshmukhparth293@gmail.com"
+app.config['MAIL_PASSWORD'] = "toix xman fsba ppqs"
+
 mail = Mail(app)
 
+@app.route('/send_email/<email>', methods=['GET'])
+def send_email(email):
+    msg_title="this is my email"
+    sender="noreply@.com"
+    msg=Message(msg_title,sender=sender,recipients=[email])
+    msg_body="this is body"
+    data={
+        'app_name':"FaceFinder",
+        'title':msg_title,
+        'body':msg_body,
+    }
+    
+    msg.html=render_template('email.html',data=data)
+
+    try:
+        mail.send(msg)
+        return "Email sent...."
+    except Exception as e:
+        print(e)
+        return "the email was not sent"
 
 # Define the folder where you'll store uploaded images.
 UPLOAD_FOLDER = 'student_details'
@@ -357,28 +385,28 @@ def new_route(subjects):
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
-# Configure email settings for Gmail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465  # Port for secure SSL/TLS
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'cse220001057@iiti.ac.in'  # Your Gmail email address
-# app.config['MAIL_PASSWORD'] =   # Your Gmail email password
-app.config['MAIL_DEFAULT_SENDER'] = 'cse220001057@iiti.ac.in'  # Default sender
+# # Configure email settings for Gmail
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+# app.config['MAIL_PORT'] = 465  # Port for secure SSL/TLS
+# app.config['MAIL_USE_TLS'] = False
+# app.config['MAIL_USE_SSL'] = True
+# app.config['MAIL_USERNAME'] = 'cse220001057@iiti.ac.in'  # Your Gmail email address
+# # app.config['MAIL_PASSWORD'] =   # Your Gmail email password
+# app.config['MAIL_DEFAULT_SENDER'] = 'cse220001057@iiti.ac.in'  # Default sender
 
 
-@app.route('/send_email', methods=['GET', 'POST'])
-def send_email():
-    if request.method == 'POST':
-        recipient = 'deshmukhparth293@gmail.com'  # Replace with the recipient's email address
-        subject = 'Hello, User!'
-        message = 'This is a test email sent from your Flask app.'
+# @app.route('/send_email', methods=['GET', 'POST'])
+# def send_email():
+#     if request.method == 'POST':
+#         recipient = 'deshmukhparth293@gmail.com'  # Replace with the recipient's email address
+#         subject = 'Hello, User!'
+#         message = 'This is a test email sent from your Flask app.'
 
-        msg = Message(subject, sender='your_email@gmail.com', recipients=[recipient])
-        msg.body = message
+#         msg = Message(subject, sender='your_email@gmail.com', recipients=[recipient])
+#         msg.body = message
 
-        mail.send(msg)
-    return 'Email sent successfully!'
+#         mail.send(msg)
+#     return 'Email sent successfully!'
 
 
 @app.route('/<subjects>/interface')
