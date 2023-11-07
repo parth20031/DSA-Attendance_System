@@ -128,7 +128,7 @@ def interface():
 
     while True:
         # ret, frame = cap.read()
-        frame=cv2.imread("sample5.jpg")
+        frame=cv2.imread("sample7.png")
         h, w, channels = frame.shape
         ph=h
         pw=w//2
@@ -194,7 +194,7 @@ def interface():
         frame = np.zeros((h, w, 3), dtype=np.uint8)
         part_index = 0
         for i in range(2):
-            
+            #sample
                 x_start = i * pw
                 x_end = (i + 1) * pw
                 y_start = 0

@@ -139,6 +139,7 @@ def interface():
         parts = []
         allFacesInParts=[]
         encodeAllFacesInParts=[]
+        alignedfaces=[]
         for i in range(2):
             
                 x_start = i * pw
@@ -152,8 +153,28 @@ def interface():
 
                 # part=cv2.resize(part,(640,486))
                 part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-                allFacesInParts.append(face_recognition.face_locations(part))
-                encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
+                facelocs=face_recognition.face_locations(part)
+                allFacesInParts.append(facelocs)
+                face_landmark_predictor = face_recognition.face_landmarks(part, facelocs)
+                for landmarks in face_landmark_predictor:
+                    # Define the desired points for alignment (e.g., eyes' positions)
+                    left_eye = landmarks["left_eye"]
+                    right_eye = landmarks["right_eye"]
+
+                    # Calculate the center between the eyes
+                    center_x = int((left_eye[0][0] + right_eye[3][0]) / 2)
+                    center_y = int((left_eye[0][1] + right_eye[3][1]) / 2)
+
+                    # Calculate the angle for alignment (you can adjust this as needed)
+                    angle = 0.0
+
+                    # Perform the actual alignment
+                    M = cv2.getRotationMatrix2D((center_x, center_y), angle, 1)
+                    aligned_face = cv2.warpAffine(part, M, (part.shape[1], part.shape[0]))
+
+                    alignedfaces.append(aligned_face)
+
+                # encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
                 parts.append(part)
         part=frame[0:ph,w//3:2*w//3]
         he,we,_=part.shape
@@ -162,25 +183,57 @@ def interface():
 
         # part=cv2.resize(part,(640,486))
         part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-        allFacesInParts.append(face_recognition.face_locations(part))
+        facelocs=face_recognition.face_locations(part)
+        allFacesInParts.append(facelocs)
         encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
+        face_landmark_predictor = face_recognition.face_landmarks(part, facelocs)
+        for landmarks in face_landmark_predictor:
+                    # Define the desired points for alignment (e.g., eyes' positions)
+                    left_eye = landmarks["left_eye"]
+                    right_eye = landmarks["right_eye"]
+
+                    # Calculate the center between the eyes
+                    center_x = int((left_eye[0][0] + right_eye[3][0]) / 2)
+                    center_y = int((left_eye[0][1] + right_eye[3][1]) / 2)
+
+                    # Calculate the angle for alignment (you can adjust this as needed)
+                    angle = 0.0
+
+                    # Perform the actual alignment
+                    M = cv2.getRotationMatrix2D((center_x, center_y), angle, 1)
+                    aligned_face = cv2.warpAffine(part, M, (part.shape[1], part.shape[0]))
+
+                    alignedfaces.append(aligned_face)
+
         parts.append(part)
 
         # allFacesInFrame = face_recognition.face_locations(frame)
         # encodeAllFaces = face_recognition.face_encodings(frame, allFacesInFrame)
 
+        aligned_face_encodings = []
 
+        for aligned_face in alignedfaces:
+            # Calculate the face encodings for each aligned face
+            face_encoding = face_recognition.face_encodings(aligned_face)
+
+            if len(face_encoding) > 0:
+            # If at least one face encoding is found, add it to the list
+                aligned_face_encodings.append(face_encoding[0])
+        
         for i in range(len(allFacesInParts)):
-            for encodes,faceloc in zip(encodeAllFacesInParts[i],allFacesInParts[i]):
+            for faceloc in allFacesInParts[i]:
+                 parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)  
+        
+        for encodes in aligned_face_encodings:
                 facedis = face_recognition.face_distance(encodings, encodes)
 
                 min_index=np.argmin(facedis)
-                if facedis[min_index]<0.99:
+                if facedis[min_index]<0.6:
                     # if i==2:
                     #     i=i-1    
                     #     parts[i]=cv2.rectangle(parts[i],(faceloc[3],2*w//3+faceloc[0]),(faceloc[1],2*w//3+faceloc[2]),(255,255,0),4)
                     # else:
-                    parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
+                                           
                     print(facedis[min_index])
                     roll_value=RollList[min_index][:-2]
                     roll_list_values.append(roll_value)

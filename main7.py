@@ -129,7 +129,7 @@ def interface():
 
     while True:
         # ret, frame = cap.read()
-        frame=cv2.imread("sample10.jpg")
+        frame=cv2.imread("sample11.jpg")
        
         
         h, w, channels = frame.shape
@@ -139,48 +139,39 @@ def interface():
         parts = []
         allFacesInParts=[]
         encodeAllFacesInParts=[]
-        for i in range(2):
+        
             
-                x_start = i * pw
-                x_end = (i + 1) * pw
-                y_start = 0
-                y_end =ph
-                part = frame[y_start:y_end, x_start:x_end]
-                he,we,_=part.shape
-                # he,we=part.shape
-                part=cv2.resize(part,(2*we,2*he))
-
-                # part=cv2.resize(part,(640,486))
-                part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-                allFacesInParts.append(face_recognition.face_locations(part))
-                encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
-                parts.append(part)
-        part=frame[0:ph,w//3:2*w//3]
-        he,we,_=part.shape
+        
+        he,we,_=frame.shape
         # he,we=part.shape
-        part=cv2.resize(part,(2*we,2*he))
+        frame=cv2.resize(frame,(2*we,2*he))
+        # part=cv2.resize(part,(640,486))
+        frame=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+        allFacesInframes=(face_recognition.face_locations(frame))
+        encodeAllFacesInframes=(face_recognition.face_encodings(frame,face_recognition.face_locations(frame)))
+   
+        
 
         # part=cv2.resize(part,(640,486))
-        part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-        allFacesInParts.append(face_recognition.face_locations(part))
-        encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
-        parts.append(part)
+    
 
         # allFacesInFrame = face_recognition.face_locations(frame)
         # encodeAllFaces = face_recognition.face_encodings(frame, allFacesInFrame)
+        
 
-
-        for i in range(len(allFacesInParts)):
-            for encodes,faceloc in zip(encodeAllFacesInParts[i],allFacesInParts[i]):
+        for faceloc in allFacesInframes:
+                  frame=cv2.rectangle(frame,(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4) 
+        
+        for encodes in encodeAllFacesInframes:
                 facedis = face_recognition.face_distance(encodings, encodes)
-
+                
                 min_index=np.argmin(facedis)
                 if facedis[min_index]<0.99:
                     # if i==2:
                     #     i=i-1    
                     #     parts[i]=cv2.rectangle(parts[i],(faceloc[3],2*w//3+faceloc[0]),(faceloc[1],2*w//3+faceloc[2]),(255,255,0),4)
                     # else:
-                    parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
+                                           
                     print(facedis[min_index])
                     roll_value=RollList[min_index][:-2]
                     roll_list_values.append(roll_value)
@@ -204,22 +195,9 @@ def interface():
 
                 print(roll_value)
         
-        for i in range(2):
+        
 
-            parts[i]=cv2.resize(parts[i],(pw,ph))
-
-        frame = np.zeros((h, w, 3), dtype=np.uint8)
-        part_index = 0
-        for i in range(2):
-            
-                x_start = i * pw
-                x_end = (i + 1) * pw
-                y_start = 0
-                y_end =  ph
-
-              
-                frame[y_start:y_end, x_start:x_end] = parts[part_index]
-                part_index += 1
+        
         frame = cv2.resize(frame, (640, 486))
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         interface[116:116 + 486, 127:640 + 127] = frame
@@ -256,7 +234,7 @@ def interface():
         #         print(roll_value)
         cv2.imshow("interface", interface)
 
-        if cv2.waitKey(1) == 27 :
+        if cv2.waitKey(1) == 27 or cv2.getWindowProperty('interface',0)<0:
             break
     print(roll_list_values)
 
