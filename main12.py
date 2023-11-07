@@ -31,26 +31,45 @@ app.config['MAIL_PASSWORD'] = "toix xman fsba ppqs"
 
 mail = Mail(app)
 
-@app.route('/send_email/<email>', methods=['GET'])
+@app.route('/edit_mail/<eligible_roll_numbers>')
+def compose_email_form(eligible_roll_numbers):
+    return render_template('email_form.html',eligible_roll_numbers=eligible_roll_numbers)
+
+@app.route('/send_email/<email>', methods=['POST'])
 def send_email(email):
-    msg_title="this is my email"
-    sender="noreply@.com"
-    msg=Message(msg_title,sender=sender,recipients=[email])
-    msg_body="this is body"
-    data={
-        'app_name':"FaceFinder",
-        'title':msg_title,
-        'body':msg_body,
-    }
-    
-    msg.html=render_template('email.html',data=data)
+    email_title = request.form.get('email_title')
+    email_body = request.form.get('email_body')
+
+    msg = Message(email_title, sender="noreply@.com", recipients=[email])
+    msg.html = email_body
 
     try:
         mail.send(msg)
-        return "Email sent...."
+        return "Email sent successfully."
     except Exception as e:
         print(e)
-        return "the email was not sent"
+        return "The email was not sent."
+
+# @app.route('/send_email/<email>', methods=['GET'])
+# def send_email(email):
+#     msg_title="this is my email"
+#     sender="noreply@.com"
+#     msg=Message(msg_title,sender=sender,recipients=[email])
+#     msg_body="this is body"
+#     data={
+#         'app_name':"FaceFinder",
+#         'title':msg_title,
+#         'body':msg_body,
+#     }
+    
+#     msg.html=render_template('email.html',data=data)
+
+#     try:
+#         mail.send(msg)
+#         return "Email sent...."
+#     except Exception as e:
+#         print(e)
+#         return "the email was not sent"
 
 # Define the folder where you'll store uploaded images.
 UPLOAD_FOLDER = 'student_details'
