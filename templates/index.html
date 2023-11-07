@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FACEFINDER</title>
     <link rel="icon" href="ing/bulb.jpg">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
+        <div class="containertry">
             <nav class="flex">
                 <div class="logo">FaceFinder</div>
                 <ul>
                     <li><a href="#">Home</a></li>
-                    <li><a href="/interface">Take Attendence</a></li>
+                    <li><a href="/{{subjects}}/interface">Take Attendence</a></li>
                     <li>
-                        <a href="#">History
-                            <i class="fas fa-caret-down"></i>
-                        </a>
-                        <ul>
+                       
+                        <a href="/{{subjects}}/docs">History</a>
+                        <!-- <a href="{{ url_for('docs', subjects=subject) }}">History</a> -->
+
+                        <!-- <ul>
                             <li>
                                 <a href="#">Per Student
                                     <i class="fas fa-caret-down"></i>
@@ -45,7 +47,7 @@
                                     </form></a></li>
                                 </ul>
                             </li>
-                        </ul>
+                        </ul> -->
                     </li>
                     <li><a href="#">About Us</a></li>
                 </ul>
@@ -64,7 +66,7 @@
         </pre>
         <p class="start">GET STARTED</p>
         <div style="text-align: center; padding-top: 50px;">
-        <img class="face" src="ing/pwYzcSZln2RxwbXhiyk9hQw6UkE.jpg.png" alt="FACEFINDER">
+        <img class="face" src="../static/imghome.png" alt="FACEFINDER">
         </div>
     <div>
         <div class="flexname">

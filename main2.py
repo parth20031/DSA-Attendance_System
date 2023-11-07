@@ -176,8 +176,6 @@ def interface():
     cap.release()
     cv2.destroyAllWindows()
 
-
-
     return render_template('index.html')
 
 @app.route('/', methods=['POST', 'GET'])

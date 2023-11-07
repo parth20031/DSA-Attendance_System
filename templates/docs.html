@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <header>
+        <div class="containertry">
+            <nav class="flex">
+                <div class="logo">FaceFinder</div>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/interface">Take Attendence</a></li>
+                    <li>
+                        <a href="/{{subjects}}/docs">History
+                            <!-- <i class="fas fa-caret-down"></i> -->
+                        </a>
+                        <!-- <ul>
+                            <li>
+                                <a href="#">Per Student
+                                    <i class="fas fa-caret-down"></i>
+                                </a>
+                                <ul>
+                                    <li><a href="#"><form action="/" method="post">
+                                        <label for="input_roll">Select a Roll Number:</label>
+                                        <input type="number" id="input_roll" name="input_roll">
+                                        <input type="submit" value="Submit">
+                                    </form></a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Per Day
+                                    <i class="fas fa-caret-down"></i>
+                                </a>
+                                <ul>
+                                    <li><a href="#"><form action="/" method="post">
+                                        <label for="input_date">Select a Date:</label>
+                                        <input type="date" id="input_date" name="input_date">
+                                        <input type="submit" value="Submit">
+                                
+                                    </form></a></li>
+                                </ul>
+                            </li>
+                        </ul> -->
+                    </li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/{{subjects}}/docs" method="post">
+        <div class="modal-body">
+            <label for="input_date">Select a Date:</label>
+            <input type="date" id="input_date" name="input_date">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                Launch demo modal
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/{{subjects}}/docs" method="post">
+                    <div class="modal-body">
+                        <label for="input_roll">Select a Roll Number:</label>
+                        <input type="number" id="input_roll" name="input_roll">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 mb-3 mt-5 mx-auto mb-sm-0">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                Launch demo modal
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/{{subjects}}/docs" method="post">
+                        <div class="modal-body">
+                            <label for="input_percent">Enter the precentage:</label>
+                            <input type="number" id="input_percent" name="input_percent">
+                        </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit"  class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+  
+<script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+</body>
+</html>
