@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify,send_file,send_from_directory,url_for,session,abort
+from flask import Flask, render_template, request, jsonify,send_file,send_from_directory,url_for
 from flask import redirect
+
 import cv2
 import os
 import pickle
@@ -17,146 +18,19 @@ from pandas import DataFrame
 from collections import defaultdict
 from flask_mail import Mail
 from flask_mail import Message
-import os
-import pathlib
-import requests
-from flask import Flask, session, abort, redirect, request
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-from pip._vendor import cachecontrol
-import google.auth.transport.requests
-#interface
+
 
 app = Flask(__name__)
 
-
-app.config['SECRET_KEY'] = "tsfyguaistyatuis589566875623568956"
-app.config['MAIL_SERVER'] = "smtp.googlemail.com"
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = "deshmukhparth293@gmail.com"
-app.config['MAIL_PASSWORD'] = "toix xman fsba ppqs"
-
 mail = Mail(app)
 
-@app.route('/edit_mail/<eligible_roll_numbers>')
-def compose_email_form(eligible_roll_numbers):
-    return render_template('email_form.html',eligible_roll_numbers=eligible_roll_numbers)
 
-@app.route('/send_email/<email>', methods=['POST'])
-def send_email(email):
-    email_title = request.form.get('email_title')
-    email_body = request.form.get('email_body')
+# Define the folder where you'll store uploaded images.
+UPLOAD_FOLDER = 'student_details'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-    msg = Message(email_title, sender="noreply@.com", recipients=[email])
-    msg.html = email_body
-
-    try:
-        mail.send(msg)
-        return "Email sent successfully."
-    except Exception as e:
-        print(e)
-        return "The email was not sent."
-
-
-allowed_emails = ["cse220001057@iiti.ac.in", "deshmukhparth293@gmail.com"]
-
-# app = Flask("Google Login App")
-app.secret_key = "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"
-
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
-GOOGLE_CLIENT_ID = "113932707724-a2g7hh9eos9n6bm1b523741blucaiq5k.apps.googleusercontent.com"
-client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret_113932707724-a2g7hh9eos9n6bm1b523741blucaiq5k.apps.googleusercontent.com.json")
-
-flow = Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
-    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1:3000/callback"
-)
-
-# Simulate user authentication
-is_authenticated = False
-
-def login_is_required(function):
-    def wrapper(*args, **kwargs):
-        if "google_id" not in session:
-            return abort(401)  # Authorization required
-        else:
-            return function()
-
-    return wrapper
-
-
-@app.route("/login")
-def login():
-    authorization_url, state = flow.authorization_url()
-    session["state"] = state
-    global is_authenticated 
-    is_authenticated = True
-    return redirect(authorization_url)
-
-
-@app.route("/callback")
-def callback():
-    flow.fetch_token(authorization_response=request.url)
-
-    if not session["state"] == request.args["state"]:
-        abort(500)  # State does not match!
-
-    credentials = flow.credentials
-    request_session = requests.session()
-    cached_session = cachecontrol.CacheControl(request_session)
-    token_request = google.auth.transport.requests.Request(session=cached_session)
-
-    id_info = id_token.verify_oauth2_token(
-        id_token=credentials._id_token,
-        request=token_request,
-        audience=GOOGLE_CLIENT_ID,
-        clock_skew_in_seconds=10  # 5 minutes tolerance
-    )
-
-    session["google_id"] = id_info.get("sub")
-    session["email"] = id_info.get("email")
-    # print(session["google_id"])
-    session["name"] = id_info.get("name")
-    print(session["name"])
-    if session["email"] not in allowed_emails:
-        return "Access Denied: Your email is not authorized to log in."
-    # Fetch the user's profile image from the Google People API
-    user_info_url = "https://people.googleapis.com/v1/people/me?personFields=photos"
-    headers = {"Authorization": f"Bearer {credentials.token}"}
-    user_info_response = requests.get(user_info_url, headers=headers)
-
-    if user_info_response.status_code == 200:
-        user_info = user_info_response.json()
-        print("try:",user_info)
-        if "photos" in user_info:
-            profile_image_url = user_info["photos"][0]["url"]
-            session["profile_image_url"] = profile_image_url
-        else:
-            session["profile_image_url"] = None
-    else:
-        session["profile_image_url"] = None
-
-    return redirect("/protected_area")
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    global is_authenticated 
-    is_authenticated = False
-    return redirect("/")
-
-
-@app.route("/protected_area")
-@login_is_required
-def protected_area():
-    # return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
-    return redirect("/")    
-
-
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Define a global variable to store eligible roll numbers
 eligible_roll_numbers = []
@@ -274,85 +148,77 @@ def create_attendance_collection(db):
     return today_data_attendance_collection
 
 
-def create_attendance_all_collection(db):
-    # Create a new collection name for attendance_all
-    roll_number_list = generate_roll_numberlist()
-    # today_date = today_date()
+# def create_attendance_all_collection(db):
+#     # Create a new collection name for attendance_all
+#     roll_number_list = generate_roll_numberlist()
+#     # today_date = today_date()
+#     today_date = datetime.now().strftime("%Y-%m-%d")
+#     attendance_all_collection_name = today_date + "_attendance_all"
+#     attendance_all_collection = db[attendance_all_collection_name]
+#     print(attendance_all_collection)  
+
+#     # Clear the existing data in the collection
+#     attendance_all_collection.delete_many({})
+
+#     # Iterate through the roll numbers and mark them as absent with a timestamp
+#     for roll_number in roll_number_list:
+#         # Insert each roll number as "Absent" with a timestamp
+#         document = {
+#             "roll_number": roll_number,
+#             "timestamp": datetime.now(),
+#             "remark": "Absent"
+#         }
+#         attendance_all_collection.insert_one(document)
+#     return attendance_all_collection
+
+# def access_attendance_all_collection(db):
+#     # Construct the collection name based on the date
+#     today_date = datetime.now().strftime("%Y-%m-%d")
+#     attendance_all_collection_name = today_date + "_attendance_all"
+#     # attendance_all_collection_name = date + "_attendance_all"
+    
+#     # Access the collection
+#     attendance_all_collection = db[attendance_all_collection_name]
+    
+#     return attendance_all_collection
+
+def create_or_get_attendance_all_collection(db):
     today_date = datetime.now().strftime("%Y-%m-%d")
     attendance_all_collection_name = today_date + "_attendance_all"
-    attendance_all_collection = db[attendance_all_collection_name]
-    print(attendance_all_collection)  
-# sample
-    # Clear the existing data in the collection
-    attendance_all_collection.delete_many({})
-
-    # Iterate through the roll numbers and mark them as absent with a timestamp
-    for roll_number in roll_number_list:
-        # Insert each roll number as "Absent" with a timestamp
-        document = {
-            "roll_number": roll_number,
-            "timestamp": datetime.now(),
-            "remark": "Absent"
-        }
-        attendance_all_collection.insert_one(document)
+    
+    # Check if the collection already exists
+    if attendance_all_collection_name not in db.list_collection_names():
+        # Collection doesn't exist, so create and initialize it
+        attendance_all_collection = db[attendance_all_collection_name]
+        
+        # Iterate through the roll numbers and mark them as absent with a timestamp
+        roll_number_list = generate_roll_numberlist()
+        for roll_number in roll_number_list:
+            document = {
+                "roll_number": roll_number,
+                "timestamp": datetime.now(),
+                "remark": "Absent"
+            }
+            attendance_all_collection.insert_one(document)
+        
+    else:
+        # Collection already exists, so just access it
+        attendance_all_collection = db[attendance_all_collection_name]
+    
     return attendance_all_collection
 
 
 @app.route('/')
 def home():    
-    profile_image_url = session.get("profile_image_url")
-    return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated,profile_image_url=profile_image_url)
-
-@app.route('/delete_subject', methods=['POST'])
-def delete_subject():
-    if request.method == 'POST':
-        # Get the subject name from the form
-        subject_name = request.form.get('subject_name')
-
-        # Connect to the MongoDB database
-        client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-        db = client['subjects']  # Set the database name to "subjects"
-        subjects_collection = db['subject_collection']
-
-        # Check if the subject exists in your database
-        subject = subjects_collection.find_one({'name': subject_name})
-        if subject:
-            # If it exists, remove it from the database
-            subjects_collection.delete_one({'name': subject_name})
-            return redirect('/')  # Redirect to the index page or another appropriate page
-
-    # Handle errors or redirection if the subject doesn't exist
-    return redirect('/')
-
-@app.route('/edit_subject', methods=['POST'])
-def edit_subject():
-    if request.method == 'POST':
-        # Get the current subject name and the new subject name from the form
-        current_name = request.form.get('current_name')
-        new_name = request.form.get('new_name')
-
-        # Connect to the MongoDB database
-        client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-        db = client['subjects']  # Set the database name to "subjects"
-        subjects_collection = db['subject_collection']
-
-        # Check if the subject with the current name exists in your database
-        subject = subjects_collection.find_one({'name': current_name})
-        if subject:
-            # If it exists, update the name to the new name
-            subjects_collection.update_one({'name': current_name}, {'$set': {'name': new_name}})
-            
-            # Now update the subjects list in your application
-            subjects = load_subjects_from_database()
-
-            return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
-
-    # Handle errors or redirection if the subject doesn't exist
-    return redirect('/')
+    return render_template('index2.html', subjects=subjects)
 
 
 @app.route('/add_subject', methods=['POST'])
 def add_subject():
+    # subject_name = request.form.get('subject_name')
+    # if subject_name:
+    #     subjects.append(subject_name)
+    # return redirect(url_for('home'))
     if request.method == 'POST':
         subject_name = request.form['subject_name']
         if subject_name not in subjects:
@@ -469,7 +335,7 @@ def docs(subjects):
                 input_percent = request.form['input_percent']
                 print(input_percent) 
                 print(f'Number of "attendance_all" collections: {number_of_collections}')
-                number_of_classes = float((float(input_percent) / 100) * number_of_collections)
+                number_of_classes = int((int(input_percent) / 100) * number_of_collections)
                 print(f'Number of classes based on {input_percent}%: {number_of_classes}')
                 # Create a dictionary to count the appearances of roll_numbers
                 roll_number_counts = defaultdict(int)
@@ -528,12 +394,36 @@ def new_route(subjects):
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
+# Configure email settings for Gmail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465  # Port for secure SSL/TLS
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'cse220001057@iiti.ac.in'  # Your Gmail email address
+# app.config['MAIL_PASSWORD'] =   # Your Gmail email password
+app.config['MAIL_DEFAULT_SENDER'] = 'cse220001057@iiti.ac.in'  # Default sender
+
+
+@app.route('/send_email', methods=['GET', 'POST'])
+def send_email():
+    if request.method == 'POST':
+        recipient = 'deshmukhparth293@gmail.com'  # Replace with the recipient's email address
+        subject = 'Hello, User!'
+        message = 'This is a test email sent from your Flask app.'
+
+        msg = Message(subject, sender='your_email@gmail.com', recipients=[recipient])
+        msg.body = message
+
+        mail.send(msg)
+    return 'Email sent successfully!'
+
+
 @app.route('/<subjects>/interface')
 def interface(subjects):
     db=access_database(subjects)
     create_student_info_collection(db)
     today_data_attendance_collection=create_attendance_collection(db)
-    attendance_all_collection=create_attendance_all_collection(db)
+    attendance_all_collection = create_or_get_attendance_all_collection(db)
     # cap = cv2.VideoCapture(0)
 
     file = open("encodings2.p", "rb")
@@ -550,14 +440,14 @@ def interface(subjects):
     interface[10:670, 800:1230] = bl
 
 
-    # cv2.namedWindow(winname="interface")
+    cv2.namedWindow(winname="interface")
 
 
     interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
 
     while True:
         # ret, frame = cap.read()
-        frame=cv2.imread("sample11.jpg")
+        frame=cv2.imread("sample5.jpg")
         h, w, channels = frame.shape
         ph=h
         pw=w//2
@@ -638,13 +528,10 @@ def interface(subjects):
         frame = cv2.resize(frame, (640, 486))
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         interface[116:116 + 486, 127:640 + 127] = frame
-        break
-    cv2.imwrite('static/interface.jpg',interface)
-    return render_template('interface.html')
-        # cv2.imshow("interface", interface)
+        cv2.imshow("interface", interface)
 
-        # if cv2.waitKey(1) == 27 :
-        #     break
+        if cv2.waitKey(1) == 27 :
+            break
     print(roll_list_values)
 
     # cap.release()
@@ -657,20 +544,18 @@ image=[]
 def upload_file(subjects):
     if request.method == 'POST':
         if 'image' in request.files:
-            uploaded_image = request.files['image']
-            if uploaded_image.filename != '':
-                # Save the uploaded image with a fixed name
-                uploaded_image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'attendance.jpg'))
-                return "Image uploaded successfully as 'attendance.jpg'"
+            image = request.files['image']
+            if image.filename != '':
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+                return "Image uploaded successfully!"
 
-    return render_template('upload.html',subjects=subjects)
+    return render_template('upload.html')
 
 
-@app.route('/<subjects>/uploads/attendance.jpg')
-def uploaded_file(subjects):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], 'attendance.jpg')
+@app.route('/<subjects>/uploads/<filename>')
+def uploaded_file(subjects,filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 if __name__ == "__main__":
     app.run(debug=True,port=3000)
-
