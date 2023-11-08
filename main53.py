@@ -576,6 +576,10 @@ def new_route(subjects):
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
+@app.route('/<subjects>/interfacevideo')
+@login_required
+
+
 @app.route('/<subjects>/interface')
 @login_required
 
