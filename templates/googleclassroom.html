@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Check if the user is authenticated -->
+        {% if is_authenticated %}
+            <p>Hello, {{ session['name'] }}!</p>
+            <a href="/logout"><button>Logout</button></a>
+        {% else %}
+            <a href="/login"><button>Login</button></a>
+        {% endif %}
+    </div>
+
+    <h1>Subjects</h1>
+    <ul>
+        {% for subject in subjects %}
+            <a href="/{{subject}}/start">{{ subject }}</a>
+        {% endfor %}
+    </ul>
+    <form action="/add_subject" method="post">
+        <label for="subject_name">Add Subject:</label>
+        <input type="text" name="subject_name" id="subject_name">
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
