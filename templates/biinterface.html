@@ -15,12 +15,14 @@
             <nav class="flex">
                 <div class="logo"><a href="/{{subjects}}/start">FaceFinder</a></div>
                 <ul>
-                    <li><a href="/{{subjects}}/start">Home</a></li>
-                    <li><a href="/biinterface">Take Attendence</a></li>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="/{{subjects}}/biinterface">Take Attendence</a></li>
+                    <!-- <li><a href="/{{subjects}}/interface">Take Attendence</a></li> -->
                     <li>
-                        <a href="/{{subjects}}/docs">History
-                            <!-- <i class="fas fa-caret-down"></i> -->
-                        </a>
+                       
+                        <a href="/{{subjects}}/docs">History</a>
+                        <!-- <a href="{{ url_for('docs', subjects=subject) }}">History</a> -->
+
                         <!-- <ul>
                             <li>
                                 <a href="#">Per Student
@@ -49,6 +51,7 @@
                             </li>
                         </ul> -->
                     </li>
+                    <li><a href="./upload">Upload Image</a></li>
                     <li><a href="#">About Us</a></li>
                 </ul>
             </nav>

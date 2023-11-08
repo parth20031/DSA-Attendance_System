@@ -9,50 +9,53 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-    <header>
-        <div class="containertry">
-            <nav class="flex">
-                <div class="logo"><a href="/{{subjects}}/start">FaceFinder</a></div>
-                <ul>
-                    <li><a href="/{{subjects}}/start">Home</a></li>
-                    <li><a href="/{{subjects}}biinterface">Take Attendence</a></li>
-                    <li>
-                        <a href="/{{subjects}}/docs">History
-                            <!-- <i class="fas fa-caret-down"></i> -->
-                        </a>
-                        <!-- <ul>
-                            <li>
-                                <a href="#">Per Student
-                                    <i class="fas fa-caret-down"></i>
-                                </a>
-                                <ul>
-                                    <li><a href="#"><form action="/" method="post">
-                                        <label for="input_roll">Select a Roll Number:</label>
-                                        <input type="number" id="input_roll" name="input_roll">
-                                        <input type="submit" value="Submit">
-                                    </form></a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Per Day
-                                    <i class="fas fa-caret-down"></i>
-                                </a>
-                                <ul>
-                                    <li><a href="#"><form action="/" method="post">
-                                        <label for="input_date">Select a Date:</label>
-                                        <input type="date" id="input_date" name="input_date">
-                                        <input type="submit" value="Submit">
-                                
-                                    </form></a></li>
-                                </ul>
-                            </li>
-                        </ul> -->
-                    </li>
-                    <li><a href="#">About Us</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <header>
+    <div class="containertry">
+        <nav class="flex">
+            <div class="logo"><a href="/{{subjects}}/start">FaceFinder</a></div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="/{{subjects}}/biinterface">Take Attendence</a></li>
+                <!-- <li><a href="/{{subjects}}/interface">Take Attendence</a></li> -->
+                <li>
+                   
+                    <a href="/{{subjects}}/docs">History</a>
+                    <!-- <a href="{{ url_for('docs', subjects=subject) }}">History</a> -->
+
+                    <!-- <ul>
+                        <li>
+                            <a href="#">Per Student
+                                <i class="fas fa-caret-down"></i>
+                            </a>
+                            <ul>
+                                <li><a href="#"><form action="/" method="post">
+                                    <label for="input_roll">Select a Roll Number:</label>
+                                    <input type="number" id="input_roll" name="input_roll">
+                                    <input type="submit" value="Submit">
+                                </form></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Per Day
+                                <i class="fas fa-caret-down"></i>
+                            </a>
+                            <ul>
+                                <li><a href="#"><form action="/" method="post">
+                                    <label for="input_date">Select a Date:</label>
+                                    <input type="date" id="input_date" name="input_date">
+                                    <input type="submit" value="Submit">
+                            
+                                </form></a></li>
+                            </ul>
+                        </li>
+                    </ul> -->
+                </li>
+                <li><a href="./upload">Upload Image</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 <div class="container">
     <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">
