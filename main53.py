@@ -26,6 +26,7 @@ from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 #interface
+import base64
 
 app = Flask(__name__)
 
@@ -529,6 +530,7 @@ def new_route(subjects):
 
 
 @app.route('/<subjects>/interface')
+
 def interface(subjects):
     db=access_database(subjects)
     create_student_info_collection(db)
@@ -550,13 +552,13 @@ def interface(subjects):
     interface[10:670, 800:1230] = bl
 
 
-    cv2.namedWindow(winname="interface")
+    # cv2.namedWindow(winname="interface")
 
 
     interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
 
-    # while True:
-        # ret, frame = cap.read()
+   
+    # ret, frame = cap.read()
     frame=cv2.imread("sample11.jpg")
     h, w, channels = frame.shape
     ph=h
@@ -587,7 +589,6 @@ def interface(subjects):
     allFacesInParts.append(face_recognition.face_locations(part))
     encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
     parts.append(part)
-
     for i in range(len(allFacesInParts)):
             for encodes,faceloc in zip(encodeAllFacesInParts[i],allFacesInParts[i]):
                 facedis = face_recognition.face_distance(encodings, encodes)
@@ -619,9 +620,7 @@ def interface(subjects):
                 print(roll_value)
         
     for i in range(2):
-
-            parts[i]=cv2.resize(parts[i],(pw,ph))
-
+        parts[i]=cv2.resize(parts[i],(pw,ph))
     frame = np.zeros((h, w, 3), dtype=np.uint8)
     part_index = 0
     for i in range(2):
@@ -637,22 +636,26 @@ def interface(subjects):
     frame = cv2.resize(frame, (640, 486))
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     interface[116:116 + 486, 127:640 + 127] = frame
-    cv2.imshow("interface", interface)
-
-    cv2.waitKey(0)  
-        
+        # interface=cv2.resize(interface,(400,400))
+        # break
+    # _, buffer = cv2.imencode('.png', interface)
+    # attendances = base64.b64encode(buffer).decode()
+    # attendancer=ndarray_to_b64(interface)
+    # _, image_data = cv2.imencode('.png', interface)
+    cv2.imwrite('static/interface.jpg',interface)
+    # return render_template('interface.html')
+    # cv2.imshow("interface", interface)
+    # cv2.waitKey(0)
+        # if cv2.waitKey(1) == 27 :
+        #     break
+    return render_template('interface.html')
     print(roll_list_values)
 
     # cap.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     return render_template('index.html',subjects=subjects)
 
-# Define the folder where you'll store uploaded images.
-UPLOAD_FOLDER = './static/data'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 image=[]
 @app.route('/<subjects>/upload', methods=['GET', 'POST'])
 def upload_file(subjects):
