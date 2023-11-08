@@ -424,41 +424,7 @@ def extract_date_from_collection(collection_name):
     return collection_name.split('_attendance_all')[0]
 
 
-@app.route('/<subjects>/docs', methods=['POST', 'GET'])
-@login_required
-def docs(subjects):
-    roll_list_values = session.get('roll_list_values', [])
-    print("try",roll_list_values)
 
-
-     #--------------------------------- info1--------------------------------------------------------------------------------
-    if 'input_date' in request.form:
-        if request.method == 'POST':
-            input_date = request.form['input_date']
-            print(input_date)
-        return render_template('docs.html',subjects=subjects)
-
-
-    
-    # ----------------------------------info2----------------------------------------------------
-#   elif 'input_roll' in request.form:
-    elif 'input_roll' in request.form:
-            # Handle input_roll case
-            if request.method == 'POST':
-                input_roll = request.form['input_roll']
-                print(input_roll)
-            return render_template('docs.html',subjects=subjects)
-
-
-
-    elif 'input_percent' in request.form:
-            # Handle input_percent case
-            if request.method == 'POST':
-                input_percent = request.form['input_percent']
-                print(input_percent)
-            return render_template('docs.html',subjects=subjects)
-    
-    return render_template('docs.html',subjects=subjects,roll_list_values=roll_list_values)
 
 
 
@@ -617,6 +583,7 @@ def new_route(subjects):
 # @app.route('/<subjects>/interfacevideo')
 # @login_required
 
+roll_list_values = []
 
 @app.route('/<subjects>/interface')
 @login_required
@@ -634,7 +601,7 @@ def interface(subjects):
     file.close()
 
     # Create an empty list to store the RollList[min] values
-    roll_list_values = []
+    global roll_list_values 
     interface = cv2.imread("static/interface/newinterface.jpg")
     interface = cv2.resize(interface, (1240, 680))
     # bl = cv2.imread("interface/blackpage.png")
@@ -686,7 +653,7 @@ def interface(subjects):
                 min_index=np.argmin(facedis)
                 if facedis[min_index]<0.6:
                     parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
-                    print(facedis[min_index])
+                    # print(facedis[min_index])
                     roll_value=RollList[min_index][:-2]
                     roll_list_values.append(roll_value)
                     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -740,9 +707,48 @@ def interface(subjects):
         #     break
     # print(roll_list_values)
     # After computing roll_list_values
-    session['roll_list_values'] = roll_list_values
+    # session['roll_list_values'] = roll_list_values
+    print(roll_list_values)
 
-    return render_template('interface.html',subjects=subjects)
+    return render_template('interface.html',subjects=subjects,roll_list_values=roll_list_values)
+
+@app.route('/<subjects>/docs', methods=['POST', 'GET'])
+@login_required
+def docs(subjects):
+    # roll_list_values = session.get('roll_list_values', [])
+    # print(roll_list_values)
+    global roll_list_values
+    print("try",roll_list_values)
+
+
+     #--------------------------------- info1--------------------------------------------------------------------------------
+    if 'input_date' in request.form:
+        if request.method == 'POST':
+            input_date = request.form['input_date']
+            print(input_date)
+        return render_template('docs.html',subjects=subjects,roll_list_values=roll_list_values)
+
+
+    
+    # ----------------------------------info2----------------------------------------------------
+#   elif 'input_roll' in request.form:
+    elif 'input_roll' in request.form:
+            # Handle input_roll case
+            if request.method == 'POST':
+                input_roll = request.form['input_roll']
+                print(input_roll)
+            return render_template('docs.html',subjects=subjects)
+
+
+
+    elif 'input_percent' in request.form:
+            # Handle input_percent case
+            if request.method == 'POST':
+                input_percent = request.form['input_percent']
+                print(input_percent)
+            return render_template('docs.html',subjects=subjects)
+    
+    return render_template('docs.html',subjects=subjects,roll_list_values=roll_list_values)
 
     # cap.release()
     # cv2.destroyAllWindows()
