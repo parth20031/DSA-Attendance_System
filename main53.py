@@ -27,6 +27,8 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 #interface
 import base64
+from functools import wraps
+
 
 app = Flask(__name__)
 
@@ -79,13 +81,21 @@ flow = Flow.from_client_secrets_file(
 # Simulate user authentication
 is_authenticated = False
 
-def login_is_required(function):
-    def wrapper(*args, **kwargs):
-        if "google_id" not in session:
-            return abort(401)  # Authorization required
-        else:
-            return function()
+# def login_is_required(function):
+#     def wrapper(*args, **kwargs):
+#         if "google_id" not in session:
+#             return abort(401)  # Authorization required
+#         else:
+#             return function()
 
+#     return wrapper
+
+def login_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not is_authenticated:
+            return redirect("/login")  # Redirect to the login page
+        return func(*args, **kwargs)
     return wrapper
 
 
@@ -153,7 +163,7 @@ def logout():
 
 
 @app.route("/protected_area")
-@login_is_required
+# @login_is_required
 def protected_area():
     # return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
     return redirect("/")    
@@ -326,11 +336,13 @@ def create_or_get_attendance_all_collection(db):
 
 
 @app.route('/')
+# @login_is_required
 def home():    
     profile_image_url = session.get("profile_image_url")
     return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated,profile_image_url=profile_image_url)
 
 @app.route('/delete_subject', methods=['POST'])
+@login_required
 def delete_subject():
     if request.method == 'POST':
         # Get the subject name from the form
@@ -352,6 +364,7 @@ def delete_subject():
     return redirect('/')
 
 @app.route('/edit_subject', methods=['POST'])
+@login_required
 def edit_subject():
     if request.method == 'POST':
         # Get the current subject name and the new subject name from the form
@@ -379,6 +392,7 @@ def edit_subject():
 
 
 @app.route('/add_subject', methods=['POST'])
+@login_required
 def add_subject():
     if request.method == 'POST':
         subject_name = request.form['subject_name']
@@ -397,6 +411,7 @@ def add_subject():
 
 
 @app.route('/<subjects>/start', methods=['POST', 'GET'])
+@login_required
 def start(subjects):   
     return render_template('index.html',subjects=subjects)
 
@@ -406,6 +421,7 @@ def extract_date_from_collection(collection_name):
 
 
 @app.route('/<subjects>/docs', methods=['POST', 'GET'])
+@login_required
 def docs(subjects):
     db=access_database(subjects)
     # List all collection names in the database
@@ -550,12 +566,14 @@ def docs(subjects):
 
 
 @app.route('/<subjects>/new_route', methods=['GET'])
+@login_required
 def new_route(subjects):
     global eligible_roll_numbers  # Access the global variable
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
 @app.route('/<subjects>/interface')
+@login_required
 
 def interface(subjects):
     db=access_database(subjects)
@@ -690,6 +708,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 image=[]
 @app.route('/<subjects>/upload', methods=['GET', 'POST'])
+@login_required
 def upload_file(subjects):
     if request.method == 'POST':
         if 'image' in request.files:
@@ -703,6 +722,7 @@ def upload_file(subjects):
 
 
 @app.route('/<subjects>/uploads/attendance.jpg')
+@login_required
 def uploaded_file(subjects):
     return send_from_directory(app.config['UPLOAD_FOLDER'], 'attendance.jpg')
 
