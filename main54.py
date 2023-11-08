@@ -444,6 +444,7 @@ def docs(subjects):
             # Handle input_roll case
             if request.method == 'POST':
                 input_roll = request.form['input_roll']
+                print(input_roll)
             return render_template('docs.html',subjects=subjects)
 
 
@@ -452,6 +453,7 @@ def docs(subjects):
             # Handle input_percent case
             if request.method == 'POST':
                 input_percent = request.form['input_percent']
+                print(input_percent)
             return render_template('docs.html',subjects=subjects)
     
     return render_template('docs.html',subjects=subjects)
