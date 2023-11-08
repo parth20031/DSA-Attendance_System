@@ -433,6 +433,8 @@ def docs(subjects):
     if 'input_date' in request.form:
         if request.method == 'POST':
             input_date = request.form['input_date']
+            print(input_date)
+        return render_template('docs.html',subjects=subjects)
 
 
     
@@ -442,6 +444,7 @@ def docs(subjects):
             # Handle input_roll case
             if request.method == 'POST':
                 input_roll = request.form['input_roll']
+            return render_template('docs.html',subjects=subjects)
 
 
 
@@ -449,6 +452,9 @@ def docs(subjects):
             # Handle input_percent case
             if request.method == 'POST':
                 input_percent = request.form['input_percent']
+            return render_template('docs.html',subjects=subjects)
+    
+    return render_template('docs.html',subjects=subjects)
 
 
 
