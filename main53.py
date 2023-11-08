@@ -674,7 +674,7 @@ def interface(subjects):
     # cv2.waitKey(0)
         # if cv2.waitKey(1) == 27 :
         #     break
-    return render_template('interface.html')
+    return render_template('interface.html',subjects=subjects)
     print(roll_list_values)
 
     # cap.release()
