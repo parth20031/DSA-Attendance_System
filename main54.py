@@ -427,6 +427,8 @@ def extract_date_from_collection(collection_name):
 @app.route('/<subjects>/docs', methods=['POST', 'GET'])
 @login_required
 def docs(subjects):
+    roll_list_values = session.get('roll_list_values', [])
+    print("try",roll_list_values)
 
 
      #--------------------------------- info1--------------------------------------------------------------------------------
@@ -456,7 +458,7 @@ def docs(subjects):
                 print(input_percent)
             return render_template('docs.html',subjects=subjects)
     
-    return render_template('docs.html',subjects=subjects)
+    return render_template('docs.html',subjects=subjects,roll_list_values=roll_list_values)
 
 
 
@@ -736,8 +738,11 @@ def interface(subjects):
     # cv2.waitKey(0)
         # if cv2.waitKey(1) == 27 :
         #     break
+    # print(roll_list_values)
+    # After computing roll_list_values
+    session['roll_list_values'] = roll_list_values
+
     return render_template('interface.html',subjects=subjects)
-    print(roll_list_values)
 
     # cap.release()
     # cv2.destroyAllWindows()
