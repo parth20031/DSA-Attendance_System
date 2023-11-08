@@ -141,7 +141,7 @@ def callback():
 
     return redirect("/protected_area")
 
-
+#welcome
 @app.route("/logout")
 def logout():
     session.clear()
@@ -690,7 +690,7 @@ def upload_file(subjects):
 
     return render_template('upload.html',subjects=subjects)
 
-
+#video
 @app.route('/<subjects>/uploads/attendance.jpg')
 def uploaded_file(subjects):
     return send_from_directory(app.config['UPLOAD_FOLDER'], 'attendance.jpg')

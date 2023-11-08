@@ -88,7 +88,7 @@ is_authenticated = False
 #         else:
 #             return function()
 
-#     return wrapper
+#     return wrapper subjects
 
 def login_required(func):
     @wraps(func)
@@ -107,7 +107,7 @@ def login():
     # is_authenticated = True
     return redirect(authorization_url)
 
-
+#welcome
 @app.route("/callback")
 def callback():
     flow.fetch_token(authorization_response=request.url)
@@ -159,14 +159,14 @@ def logout():
     session.clear()
     global is_authenticated 
     is_authenticated = False
-    return redirect("/")
+    return redirect("/explore")
 
 
 @app.route("/protected_area")
 # @login_is_required
 def protected_area():
     # return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
-    return redirect("/")    
+    return redirect("/explore")    
 
 
 
@@ -240,7 +240,7 @@ def create_or_get_collection(db, collection_name):
         return db[collection_name]
     else:
         return db[collection_name]
-    
+ #delete   
 def today_date():
     today_date = datetime.now().strftime("%Y-%m-%d")  # Get the current date in YYYY-MM-DD format
     return today_date
@@ -335,7 +335,7 @@ def create_or_get_attendance_all_collection(db):
     return attendance_all_collection
 
 
-@app.route('/')
+@app.route('/explore')
 # @login_is_required
 def home():    
     profile_image_url = session.get("profile_image_url")
@@ -358,11 +358,11 @@ def delete_subject():
         if subject:
             # If it exists, remove it from the database
             subjects_collection.delete_one({'name': subject_name})
-            return redirect('/')  # Redirect to the index page or another appropriate page
-
+            return redirect('/explore')  # Redirect to the index page or another appropriate page
+#edit
     # Handle errors or redirection if the subject doesn't exist
     return redirect('/')
-
+#welcome
 @app.route('/edit_subject', methods=['POST'])
 @login_required
 def edit_subject():
@@ -388,7 +388,7 @@ def edit_subject():
             return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
 
     # Handle errors or redirection if the subject doesn't exist
-    return redirect('/')
+    return redirect('/explore')
 
 
 @app.route('/add_subject', methods=['POST'])
@@ -409,7 +409,10 @@ def add_subject():
 
     return redirect(url_for('home'))
 
-
+@app.route('/')
+# @login_required
+def welcome():
+    return render_template('video.html')
 @app.route('/<subjects>/start', methods=['POST', 'GET'])
 @login_required
 def start(subjects):   
@@ -644,7 +647,7 @@ def interface(subjects):
     for i in range(len(allFacesInParts)):
             for encodes,faceloc in zip(encodeAllFacesInParts[i],allFacesInParts[i]):
                 facedis = face_recognition.face_distance(encodings, encodes)
-
+#explore
                 min_index=np.argmin(facedis)
                 if facedis[min_index]<0.6:
                     parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
