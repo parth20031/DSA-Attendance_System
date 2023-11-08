@@ -358,7 +358,9 @@ def delete_subject():
         if subject:
             # If it exists, remove it from the database
             subjects_collection.delete_one({'name': subject_name})
-            return redirect('/')  # Redirect to the index page or another appropriate page
+            # return redirect('/')  # Redirect to the index page or another appropriate page
+            if subject_name in subjects:
+                subjects.remove(subject_name)
 
     # Handle errors or redirection if the subject doesn't exist
     return redirect('/')
