@@ -62,7 +62,7 @@ def send_email(email):
         return "The email was not sent."
 
 
-allowed_emails = ["cse220001057@iiti.ac.in", "deshmukhparth293@gmail.com"]
+allowed_emails = ["cse220001057@iiti.ac.in", "cse220001056@iiti.ac.in","deshmukhparth293@gmail.com"]
 
 # app = Flask("Google Login App")
 app.secret_key = "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"
@@ -576,8 +576,8 @@ def new_route(subjects):
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
-@app.route('/<subjects>/interfacevideo')
-@login_required
+# @app.route('/<subjects>/interfacevideo')
+# @login_required
 
 
 @app.route('/<subjects>/interface')
