@@ -415,6 +415,10 @@ def add_subject():
 def start(subjects):   
     return render_template('index.html',subjects=subjects)
 
+@app.route('/<subjects>/biinterface')
+@login_required
+def biinterface(subjects):   
+    return render_template('biinterface.html',subjects=subjects)
 
 def extract_date_from_collection(collection_name):
     return collection_name.split('_attendance_all')[0]
