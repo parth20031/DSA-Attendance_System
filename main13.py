@@ -83,6 +83,7 @@ def send_email(email):
 #         print(e)
 #         return "the email was not sent"
 
+allowed_emails = ["cse220001057@iiti.ac.in", "example2@example.com"]
 
 app = Flask("Google Login App")
 app.secret_key = "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"
@@ -140,9 +141,13 @@ def callback():
     )
 
     session["google_id"] = id_info.get("sub")
+    session["email"] = id_info.get("email")
     # print(session["google_id"])
     session["name"] = id_info.get("name")
     print(session["name"])
+    if session["email"] not in allowed_emails:
+        return "Access Denied: Your email is not authorized to log in."
+
     return redirect("/protected_area")
 
 
