@@ -275,27 +275,52 @@ def create_attendance_collection(db):
     return today_data_attendance_collection
 
 
-def create_attendance_all_collection(db):
-    # Create a new collection name for attendance_all
-    roll_number_list = generate_roll_numberlist()
-    # today_date = today_date()
+# def create_attendance_all_collection(db):
+#     # Create a new collection name for attendance_all
+#     roll_number_list = generate_roll_numberlist()
+#     # today_date = today_date()
+#     today_date = datetime.now().strftime("%Y-%m-%d")
+#     attendance_all_collection_name = today_date + "_attendance_all"
+#     attendance_all_collection = db[attendance_all_collection_name]
+#     print(attendance_all_collection)  
+# # sample
+#     # Clear the existing data in the collection
+#     attendance_all_collection.delete_many({})
+
+#     # Iterate through the roll numbers and mark them as absent with a timestamp
+#     for roll_number in roll_number_list:
+#         # Insert each roll number as "Absent" with a timestamp
+#         document = {
+#             "roll_number": roll_number,
+#             "timestamp": datetime.now(),
+#             "remark": "Absent"
+#         }
+#         attendance_all_collection.insert_one(document)
+#     return attendance_all_collection
+
+def create_or_get_attendance_all_collection(db):
     today_date = datetime.now().strftime("%Y-%m-%d")
     attendance_all_collection_name = today_date + "_attendance_all"
-    attendance_all_collection = db[attendance_all_collection_name]
-    print(attendance_all_collection)  
-# sample
-    # Clear the existing data in the collection
-    attendance_all_collection.delete_many({})
-
-    # Iterate through the roll numbers and mark them as absent with a timestamp
-    for roll_number in roll_number_list:
-        # Insert each roll number as "Absent" with a timestamp
-        document = {
-            "roll_number": roll_number,
-            "timestamp": datetime.now(),
-            "remark": "Absent"
-        }
-        attendance_all_collection.insert_one(document)
+    
+    # Check if the collection already exists
+    if attendance_all_collection_name not in db.list_collection_names():
+        # Collection doesn't exist, so create and initialize it
+        attendance_all_collection = db[attendance_all_collection_name]
+        
+        # Iterate through the roll numbers and mark them as absent with a timestamp
+        roll_number_list = generate_roll_numberlist()
+        for roll_number in roll_number_list:
+            document = {
+                "roll_number": roll_number,
+                "timestamp": datetime.now(),
+                "remark": "Absent"
+            }
+            attendance_all_collection.insert_one(document)
+        
+    else:
+        # Collection already exists, so just access it
+        attendance_all_collection = db[attendance_all_collection_name]
+    
     return attendance_all_collection
 
 
@@ -535,7 +560,7 @@ def interface(subjects):
     db=access_database(subjects)
     create_student_info_collection(db)
     today_data_attendance_collection=create_attendance_collection(db)
-    attendance_all_collection=create_attendance_all_collection(db)
+    attendance_all_collection = create_or_get_attendance_all_collection(db)
     # cap = cv2.VideoCapture(0)
 
     file = open("encodings2.p", "rb")
