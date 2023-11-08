@@ -61,7 +61,7 @@ def send_email(email):
 
 allowed_emails = ["cse220001057@iiti.ac.in", "deshmukhparth293@gmail.com"]
 
-app = Flask("Google Login App")
+# app = Flask("Google Login App")
 app.secret_key = "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"
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
