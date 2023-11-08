@@ -550,14 +550,14 @@ def interface(subjects):
     interface[10:670, 800:1230] = bl
 
 
-    cv2.namedWindow(winname="interface")
+    # cv2.namedWindow(winname="interface")
 
 
     interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
 
     while True:
         # ret, frame = cap.read()
-        frame=cv2.imread("sample7.jpg")
+        frame=cv2.imread("sample11.jpg")
         h, w, channels = frame.shape
         ph=h
         pw=w//2
@@ -638,22 +638,20 @@ def interface(subjects):
         frame = cv2.resize(frame, (640, 486))
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         interface[116:116 + 486, 127:640 + 127] = frame
-        cv2.imshow("interface", interface)
+        break
+    cv2.imwrite('static/interface.jpg',interface)
+    return render_template('interface.html')
+        # cv2.imshow("interface", interface)
 
-        if cv2.waitKey(1) == 27 :
-            break
+        # if cv2.waitKey(1) == 27 :
+        #     break
     print(roll_list_values)
 
     # cap.release()
     cv2.destroyAllWindows()
     return render_template('index.html',subjects=subjects)
 
-# Define the folder where you'll store uploaded images.
-UPLOAD_FOLDER = './static/data'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 image=[]
 @app.route('/<subjects>/upload', methods=['GET', 'POST'])
 def upload_file(subjects):
