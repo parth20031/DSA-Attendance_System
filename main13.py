@@ -147,6 +147,21 @@ def callback():
     print(session["name"])
     if session["email"] not in allowed_emails:
         return "Access Denied: Your email is not authorized to log in."
+    # Fetch the user's profile image from the Google People API
+    user_info_url = "https://people.googleapis.com/v1/people/me?personFields=photos"
+    headers = {"Authorization": f"Bearer {credentials.token}"}
+    user_info_response = requests.get(user_info_url, headers=headers)
+
+    if user_info_response.status_code == 200:
+        user_info = user_info_response.json()
+        print("try:",user_info)
+        if "photos" in user_info:
+            profile_image_url = user_info["photos"][0]["url"]
+            session["profile_image_url"] = profile_image_url
+        else:
+            session["profile_image_url"] = None
+    else:
+        session["profile_image_url"] = None
 
     return redirect("/protected_area")
 
@@ -314,7 +329,8 @@ def create_attendance_all_collection(db):
 
 @app.route('/')
 def home():    
-    return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
+    profile_image_url = session.get("profile_image_url")
+    return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated,profile_image_url=profile_image_url)
 
 
 @app.route('/add_subject', methods=['POST'])

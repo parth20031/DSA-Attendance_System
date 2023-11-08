@@ -10,6 +10,11 @@
         <!-- Check if the user is authenticated -->
         {% if is_authenticated %}
             <p>Hello, {{ session['name'] }}!</p>
+            {% if profile_image_url %}
+            <img src="{{ profile_image_url }}" alt="Profile Image">
+        {% else %}
+            <!-- <p>No profile image available</p> -->
+        {% endif %}
             <a href="/logout"><button>Logout</button></a>
         {% else %}
             <a href="/login"><button>Login</button></a>
