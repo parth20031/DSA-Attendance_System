@@ -93,8 +93,8 @@ def login_is_required(function):
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
-    global is_authenticated 
-    is_authenticated = True
+    # global is_authenticated 
+    # is_authenticated = True
     return redirect(authorization_url)
 
 
@@ -116,7 +116,8 @@ def callback():
         audience=GOOGLE_CLIENT_ID,
         clock_skew_in_seconds=10  # 5 minutes tolerance
     )
-
+    global is_authenticated 
+    is_authenticated = True
     session["google_id"] = id_info.get("sub")
     session["email"] = id_info.get("email")
     # print(session["google_id"])
