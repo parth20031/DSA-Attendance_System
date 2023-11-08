@@ -17,12 +17,8 @@ from pandas import DataFrame
 from collections import defaultdict
 from flask_mail import Mail
 from flask_mail import Message
-
-
-
 import os
 import pathlib
-
 import requests
 from flask import Flask, session, abort, redirect, request
 from google.oauth2 import id_token
@@ -62,28 +58,8 @@ def send_email(email):
         print(e)
         return "The email was not sent."
 
-# @app.route('/send_email/<email>', methods=['GET'])
-# def send_email(email):
-#     msg_title="this is my email"
-#     sender="noreply@.com"
-#     msg=Message(msg_title,sender=sender,recipients=[email])
-#     msg_body="this is body"
-#     data={
-#         'app_name':"FaceFinder",
-#         'title':msg_title,
-#         'body':msg_body,
-#     }
-    
-#     msg.html=render_template('email.html',data=data)
 
-#     try:
-#         mail.send(msg)
-#         return "Email sent...."
-#     except Exception as e:
-#         print(e)
-#         return "the email was not sent"
-
-allowed_emails = ["cse220001057@iiti.ac.in", "example2@example.com"]
+allowed_emails = ["cse220001057@iiti.ac.in", "deshmukhparth293@gmail.com"]
 
 app = Flask("Google Login App")
 app.secret_key = "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"
@@ -377,10 +353,6 @@ def edit_subject():
 
 @app.route('/add_subject', methods=['POST'])
 def add_subject():
-    # subject_name = request.form.get('subject_name')
-    # if subject_name:
-    #     subjects.append(subject_name)
-    # return redirect(url_for('home'))
     if request.method == 'POST':
         subject_name = request.form['subject_name']
         if subject_name not in subjects:
@@ -556,30 +528,6 @@ def new_route(subjects):
     return render_template('new_route.html', eligible_roll_numbers=eligible_roll_numbers,subjects=subjects)
 
 
-# # Configure email settings for Gmail
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 465  # Port for secure SSL/TLS
-# app.config['MAIL_USE_TLS'] = False
-# app.config['MAIL_USE_SSL'] = True
-# app.config['MAIL_USERNAME'] = 'cse220001057@iiti.ac.in'  # Your Gmail email address
-# # app.config['MAIL_PASSWORD'] =   # Your Gmail email password
-# app.config['MAIL_DEFAULT_SENDER'] = 'cse220001057@iiti.ac.in'  # Default sender
-
-
-# @app.route('/send_email', methods=['GET', 'POST'])
-# def send_email():
-#     if request.method == 'POST':
-#         recipient = 'deshmukhparth293@gmail.com'  # Replace with the recipient's email address
-#         subject = 'Hello, User!'
-#         message = 'This is a test email sent from your Flask app.'
-
-#         msg = Message(subject, sender='your_email@gmail.com', recipients=[recipient])
-#         msg.body = message
-
-#         mail.send(msg)
-#     return 'Email sent successfully!'
-
-
 @app.route('/<subjects>/interface')
 def interface(subjects):
     db=access_database(subjects)
@@ -719,11 +667,6 @@ def upload_file(subjects):
 
     return render_template('upload.html',subjects=subjects)
 
-
-
-# @app.route('/<subjects>/uploads/<filename>')
-# def uploaded_file(subjects,filename):
-#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/<subjects>/uploads/attendance.jpg')
 def uploaded_file(subjects):
