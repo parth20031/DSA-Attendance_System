@@ -571,21 +571,21 @@ def interface(subjects):
 
     # Create an empty list to store the RollList[min] values
     roll_list_values = []
-    interface = cv2.imread("interface/as2c.jpeg")
+    interface = cv2.imread("static/interface/newinterface.jpg")
     interface = cv2.resize(interface, (1240, 680))
-    bl = cv2.imread("interface/blackpage.png")
-    bl = cv2.resize(bl, (1230 - 800, 670 - 10))
-    interface[10:670, 800:1230] = bl
+    # bl = cv2.imread("interface/blackpage.png")
+    # bl = cv2.resize(bl, (1230 - 800, 670 - 10))
+    # interface[10:670, 800:1230] = bl
 
 
     # cv2.namedWindow(winname="interface")
 
 
-    interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
+    # interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
 
    
     # ret, frame = cap.read()
-    frame=cv2.imread("sample11.jpg")
+    frame=cv2.imread("static/data/attendance.jpg")
     h, w, channels = frame.shape
     ph=h
     pw=w//2
