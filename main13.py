@@ -450,7 +450,7 @@ def docs(subjects):
                 input_percent = request.form['input_percent']
                 print(input_percent) 
                 print(f'Number of "attendance_all" collections: {number_of_collections}')
-                number_of_classes = int((int(input_percent) / 100) * number_of_collections)
+                number_of_classes = float((float(input_percent) / 100) * number_of_collections)
                 print(f'Number of classes based on {input_percent}%: {number_of_classes}')
                 # Create a dictionary to count the appearances of roll_numbers
                 roll_number_counts = defaultdict(int)
