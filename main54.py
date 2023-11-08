@@ -718,7 +718,8 @@ def docs(subjects):
     # roll_list_values = session.get('roll_list_values', [])
     # print(roll_list_values)
     global roll_list_values
-    print("try",roll_list_values)
+    for roll_number in roll_list_values:
+        print("try",roll_number)
 
 
      #--------------------------------- info1--------------------------------------------------------------------------------
