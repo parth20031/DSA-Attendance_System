@@ -180,12 +180,7 @@ def protected_area():
     # return f"Hello {session['name']}! <br/> <a href='/logout'><button>Logout</button></a>"
     return redirect("/")    
 
-# Define the folder where you'll store uploaded images.
-UPLOAD_FOLDER = 'student_details'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 # Define a global variable to store eligible roll numbers
 eligible_roll_numbers = []
@@ -658,23 +653,34 @@ def interface(subjects):
     cv2.destroyAllWindows()
     return render_template('index.html',subjects=subjects)
 
+# Define the folder where you'll store uploaded images.
+UPLOAD_FOLDER = './static/data'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 image=[]
 @app.route('/<subjects>/upload', methods=['GET', 'POST'])
 def upload_file(subjects):
     if request.method == 'POST':
         if 'image' in request.files:
-            image = request.files['image']
-            if image.filename != '':
-                image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
-                return "Image uploaded successfully!"
+            uploaded_image = request.files['image']
+            if uploaded_image.filename != '':
+                # Save the uploaded image with a fixed name
+                uploaded_image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'attendance.jpg'))
+                return "Image uploaded successfully as 'attendance.jpg'"
 
-    return render_template('upload.html')
+    return render_template('upload.html',subjects=subjects)
 
 
-@app.route('/<subjects>/uploads/<filename>')
-def uploaded_file(subjects,filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+# @app.route('/<subjects>/uploads/<filename>')
+# def uploaded_file(subjects,filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/<subjects>/uploads/attendance.jpg')
+def uploaded_file(subjects):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], 'attendance.jpg')
 
 
 if __name__ == "__main__":
