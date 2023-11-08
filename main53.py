@@ -681,6 +681,12 @@ def interface(subjects):
     # cv2.destroyAllWindows()
     return render_template('index.html',subjects=subjects)
 
+# Define the folder where you'll store uploaded images.
+UPLOAD_FOLDER = './static/data'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 image=[]
 @app.route('/<subjects>/upload', methods=['GET', 'POST'])
