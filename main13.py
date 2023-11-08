@@ -327,6 +327,53 @@ def home():
     profile_image_url = session.get("profile_image_url")
     return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated,profile_image_url=profile_image_url)
 
+@app.route('/delete_subject', methods=['POST'])
+def delete_subject():
+    if request.method == 'POST':
+        # Get the subject name from the form
+        subject_name = request.form.get('subject_name')
+
+        # Connect to the MongoDB database
+        client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
+        db = client['subjects']  # Set the database name to "subjects"
+        subjects_collection = db['subject_collection']
+
+        # Check if the subject exists in your database
+        subject = subjects_collection.find_one({'name': subject_name})
+        if subject:
+            # If it exists, remove it from the database
+            subjects_collection.delete_one({'name': subject_name})
+            return redirect('/')  # Redirect to the index page or another appropriate page
+
+    # Handle errors or redirection if the subject doesn't exist
+    return redirect('/')
+
+@app.route('/edit_subject', methods=['POST'])
+def edit_subject():
+    if request.method == 'POST':
+        # Get the current subject name and the new subject name from the form
+        current_name = request.form.get('current_name')
+        new_name = request.form.get('new_name')
+
+        # Connect to the MongoDB database
+        client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
+        db = client['subjects']  # Set the database name to "subjects"
+        subjects_collection = db['subject_collection']
+
+        # Check if the subject with the current name exists in your database
+        subject = subjects_collection.find_one({'name': current_name})
+        if subject:
+            # If it exists, update the name to the new name
+            subjects_collection.update_one({'name': current_name}, {'$set': {'name': new_name}})
+            
+            # Now update the subjects list in your application
+            subjects = load_subjects_from_database()
+
+            return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
+
+    # Handle errors or redirection if the subject doesn't exist
+    return redirect('/')
+
 
 @app.route('/add_subject', methods=['POST'])
 def add_subject():
