@@ -279,7 +279,7 @@ def create_or_get_database(db_name):
         return client[db_name]  # Return the existing database
     else:
         return client[db_name]  # Create a new database and return it
-    
+    #video
 def create_or_get_database_with_collection(db_name, collection_name, document):
     # Connect to your MongoDB server
     client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
@@ -606,7 +606,8 @@ def video(subjects):
     # interface[10:670, 800:1230] = bl
 
 
-    cv2.namedWindow(winname="interface")
+    # cv2.namedWindow(winname="interface")
+    cv2.namedWindow("interface", cv2.WINDOW_NORMAL)
 
 
     # interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
@@ -702,7 +703,7 @@ def video(subjects):
     # return render_template('interface.html')
         cv2.imshow("interface", interface)
     # cv2.waitKey(0)
-        if cv2.waitKey(1) == 27 :
+        if cv2.waitKey(1) == 27 or cv2.getWindowProperty("interface", cv2.WND_PROP_VISIBLE) < 1:
             break
     # print(roll_list_values)
     # After computing roll_list_values
@@ -710,7 +711,7 @@ def video(subjects):
     print(roll_list_values)
     return render_template('biinterface.html',subjects=subjects)
     # return render_template('interface.html',subjects=subjects,roll_list_values=roll_list_values)
-
+#docs
 @app.route('/<subjects>/docs', methods=['POST', 'GET'])
 @login_required
 def docs(subjects):
