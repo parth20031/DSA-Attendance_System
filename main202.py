@@ -521,7 +521,8 @@ def interface(subjects):
                 facedis = face_recognition.face_distance(encodings, encodes)
 
                 min_index=np.argmin(facedis)
-                if facedis[min_index]<0.6:
+                roll_value=[]
+                if facedis[min_index]<0.55:
                     parts[i]=cv2.rectangle(parts[i],(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
                     # print(facedis[min_index])
                     roll_value=RollList[min_index][:-2]
