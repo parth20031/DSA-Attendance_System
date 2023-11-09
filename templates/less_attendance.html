@@ -1,0 +1,8 @@
+{% if less_attendance %}
+    <p>Roll numbers with less than {{ input_percent }}% attendance:</p>
+    <ul>
+        {% for roll_number in less_attendance %}
+            <li>{{ roll_number }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
