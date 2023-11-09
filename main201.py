@@ -255,6 +255,9 @@ def copy_all_collections(old_db_name, new_db_name):
         # Copy documents from the source collection to the target collection
         for document in source_collection.find():
             target_collection.insert_one(document)
+    
+    # Drop the old database after copying
+    client.drop_database(old_db_name)
 
 @app.route('/edit_subject', methods=['POST'])
 @login_required
@@ -434,6 +437,8 @@ def delete_subject():
         if subject:
             # If it exists, remove it from the database
             subjects_collection.delete_one({'name': subject_name})
+
+            client.drop_database(subject_name)
             if subject_name in subjects:
                 subjects.remove(subject_name)
             return redirect('/explore')  # Redirect to the index page or another appropriate page
