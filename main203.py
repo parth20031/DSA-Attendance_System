@@ -1,4 +1,6 @@
 # pip install Flask opencv-python-headless face-recognition cvzone pymongo pandas xlsxwriter Flask-Mail requests google-auth google-auth-oauthlib
+# pip install virtualenv
+# virtualenv venv
 # pip install -r requirements.txt
 
 
