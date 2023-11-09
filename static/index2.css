@@ -1,0 +1,155 @@
+*{  
+    /* color: white;  */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins", sans-serif;
+}
+h1{
+    color: white;
+}
+body{
+    height: 100vh;
+    /* background-color: grey; */
+    background: url("./login-bg.jpg");
+
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.profile{
+    display: flex;
+    /* justify-content: center; */
+    /* text-align: ; */
+    margin-right: 5px;
+    font-size: 20px;
+}
+.greetings{
+    color: white;
+    margin-left: 10px;
+    margin-left: 10px;
+    text-align: center;
+    /* font-size: 40px; */
+    /* position: absolute; */
+    /* right: 30px; */
+    
+    /* margin: 32px; */
+    /* transform: translate(-50%,-50%); */
+    /* border: 5px solid white; */
+    padding: 10px 30px;
+    border-radius: 10px;
+    /* background-color: #36454F; */
+    /* color: white; */
+    /* box-shadow: 0 0 20px #eee; */
+}
+a{
+    text-decoration: none;
+}
+         
+.logout button {
+    border: none;
+    /* position: absolute; */
+    /* right: 0; */
+    text-decoration: none;
+    background-image: linear-gradient(to right, #D31027 0%, #EA384D  51%, #D31027  100%);
+    /* margin: 10px; */
+    padding: 12px 30px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    /* box-shadow: 0 0 20px #eee; */
+    border-radius: 10px;
+    display: block;
+  }
+
+  .logout button:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+ .container{
+    /* position: absolute; */
+    /* left: 50%; */
+    /* transform: translate(-50%,0); */
+    display: flex;
+    /* background-color: black; */
+    justify-content: right;
+    align-items: center;
+ }
+          
+ .login button {
+    background-image: linear-gradient(to right, #F09819 0%, #EDDE5D  51%, #F09819  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    /* box-shadow: 0 0 20px #eee; */
+    border-radius: 10px;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+
+  .login button:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+ 
+ .Add{
+    margin-right: 40px;
+    font-size: 40px;
+    text-align: center;
+    justify-content: center;
+    display:flex;
+    /* justify-content: space-between; */
+    flex-direction: column;
+    position: relative;
+    float: right;
+    /* left:80%; */
+    /* right: 100px; */
+    color: white;
+ }
+ ::placeholder{
+    color: white;
+ }
+ .search{
+    /* width: 100%; */
+    width: 400px;
+    margin:20px 0px;
+    /* height: 200px; */
+    background-color: rgba(55, 255, 255,0.2);
+    border-radius: 60px;
+    /* border:2px solid red; */
+    /* padding: 10px 20px; */
+    backdrop-filter: blur(4px) saturate(180%);
+ }
+ .search input{
+    background: transparent;
+    border: 0;
+    outline: none;
+    padding: 12px 10px;
+    font-size: 20px;
+    color: white;
+ }
+ .Add button{
+    background-color: blue;
+    border-radius: 5px;
+    height: 60px;
+    font-size: 20px;
+    border: 1px solid white;
+
+ }
+ .subjectstry{
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* width: 100%; */
+    width:60%;
+    height:20%;
+
+    background-color: red;
+ }
