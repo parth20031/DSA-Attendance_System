@@ -2,17 +2,18 @@
 <html>
 <head>
     <title>Compose Email</title>
+    <link rel="stylesheet" href="../static/email.css">
 </head>
 <body>
-    <h1>Compose Email</h1>
+    <h1 class="title">Compose Email</h1>
     <form method="POST" action="/send_email/cse{{eligible_roll_numbers}}@iiti.ac.in">
-        <label for="email_title">Email Title:</label>
-        <input type="text" name="email_title" id="email_title" required>
+        <label class="emailtitle" for="email_title">Email Title:</label>
+        <input class="emailinput" type="text" name="email_title" id="email_title" placeholder="Regarding less attendence" required>
         <br>
-        <label for="email_body">Email Body:</label>
-        <textarea name="email_body" id="email_body" rows="4" required></textarea>
+        <label class="label" for="email_body">Email Body:</label>
+        <textarea class="textarea" name="email_body" id="email_body" rows="12" required></textarea>
         <br>
-        <input type="submit" value="Send Email">
+        <input class="submit" type="submit" value="Send Email">
     </form>
 </body>
 </html>
