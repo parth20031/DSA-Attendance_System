@@ -200,89 +200,12 @@ client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB 
 dbs= client['subjects']
 subjects_collection = dbs['subject_collection']
 
-# def load_subjects_from_database():
-#     return [subject['name'] for subject in subjects_collection.find()]
-
-# Helper function to load subjects from the 'subjects' collection
 def load_subjects_from_database():
-    client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-    db = client['subjects']  # Set the database name to "subjects"
-    subjects_collection = db['subject_collection']
     return [subject['name'] for subject in subjects_collection.find()]
 
 # Load subjects from the database into the subjects list when the server starts
 subjects = load_subjects_from_database()
 
-
-# Helper function to update the subject name in the 'subjects' collection
-def update_subject_name_in_subjects(subject_name, new_name):
-    client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-    db = client['subjects']  # Set the database name to "subjects"
-    subjects_collection = db['subject_collection']
-
-    # Rename the subject in the 'subjects' collection
-    subjects_collection.update_one({'name': subject_name}, {'$set': {'name': new_name}})
-
-    # Use the existing data transfer function to copy data from the old subject collection to the new one
-    # copy_data_to_new_subject(subject_name, new_name)
-
-# Helper function to create or get a database with a collection and insert a document
-def create_or_get_database_with_collection(db_name, collection_name, document):
-    client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
-    
-    if db_name in client.list_database_names():
-        db = client[db_name]
-    else:
-        db = client[db_name]
-        db.create_collection(collection_name)
-    
-    db[collection_name].insert_one(document)
-
-def copy_all_collections(old_db_name, new_db_name):
-    client = MongoClient('mongodb://localhost:27017')  # Replace with your MongoDB connection string
-
-    # Access the old and new databases
-    old_db = client[old_db_name]
-    new_db = client[new_db_name]
-
-    # List the collections in the old database
-    collections = old_db.list_collection_names()
-
-    for collection_name in collections:
-        source_collection = old_db[collection_name]
-        target_collection = new_db[collection_name]
-
-        # Copy documents from the source collection to the target collection
-        for document in source_collection.find():
-            target_collection.insert_one(document)
-    
-    # Drop the old database after copying
-    client.drop_database(old_db_name)
-
-@app.route('/edit_subject', methods=['POST'])
-@login_required
-def edit_subject():
-    if request.method == 'POST':
-        # Get the current subject name and the new subject name from the form
-        current_name = request.form.get('current_name')
-        new_name = request.form.get('new_name')
-
-        # Update the subject name in the 'subjects' collection and copy data
-        update_subject_name_in_subjects(current_name, new_name)
-
-        collection_name = "my_collection"  # Replace with your desired collection name
-        document = {"key": "value333"} 
-        create_or_get_database_with_collection(new_name, collection_name, document)
-
-        copy_all_collections(current_name, new_name)
-
-        # Now update the subjects list in your application
-        subjects = load_subjects_from_database()
-
-        return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
-
-    # Handle errors or redirection if the subject doesn't exist
-    return redirect('/')
 
 def create_or_get_database(db_name):
     # Connect to your MongoDB server
@@ -437,8 +360,6 @@ def delete_subject():
         if subject:
             # If it exists, remove it from the database
             subjects_collection.delete_one({'name': subject_name})
-
-            client.drop_database(subject_name)
             if subject_name in subjects:
                 subjects.remove(subject_name)
             return redirect('/explore')  # Redirect to the index page or another appropriate page
@@ -446,34 +367,32 @@ def delete_subject():
     # Handle errors or redirection if the subject doesn't exist
     return redirect('/explore')
 #'/'
-# @app.route('/edit_subject', methods=['POST'])
-# @login_required
-# def edit_subject():
-#     if request.method == 'POST':
-#         # Get the current subject name and the new subject name from the form
-#         current_name = request.form.get('current_name')
-#         new_name = request.form.get('new_name')
+@app.route('/edit_subject', methods=['POST'])
+@login_required
+def edit_subject():
+    if request.method == 'POST':
+        # Get the current subject name and the new subject name from the form
+        current_name = request.form.get('current_name')
+        new_name = request.form.get('new_name')
 
-#         # Connect to the MongoDB database
-#         client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-#         db = client['subjects']  # Set the database name to "subjects"
-#         subjects_collection = db['subject_collection']
+        # Connect to the MongoDB database
+        client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
+        db = client['subjects']  # Set the database name to "subjects"
+        subjects_collection = db['subject_collection']
 
-#         # Check if the subject with the current name exists in your database
-#         subject = subjects_collection.find_one({'name': current_name})
-#         if subject:
-#             # If it exists, update the name to the new name
-#             subjects_collection.update_one({'name': current_name}, {'$set': {'name': new_name}})
+        # Check if the subject with the current name exists in your database
+        subject = subjects_collection.find_one({'name': current_name})
+        if subject:
+            # If it exists, update the name to the new name
+            subjects_collection.update_one({'name': current_name}, {'$set': {'name': new_name}})
             
-#             # Now update the subjects list in your application
-#             subjects = load_subjects_from_database()
+            # Now update the subjects list in your application
+            subjects = load_subjects_from_database()
 
-#             return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
+            return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
 
-#     # Handle errors or redirection if the subject doesn't exist
-#     return redirect('/explore')
-
-
+    # Handle errors or redirection if the subject doesn't exist
+    return redirect('/explore')
 
 
 @app.route('/add_subject', methods=['POST'])
@@ -507,6 +426,10 @@ def biinterface(subjects):
 
 def extract_date_from_collection(collection_name):
     return collection_name.split('_attendance_all')[0]
+
+
+
+
 
 
 # @app.route('/<subjects>/docs', methods=['POST', 'GET'])
