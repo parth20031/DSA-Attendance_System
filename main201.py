@@ -28,11 +28,8 @@ import google.auth.transport.requests
 #interface
 import base64
 from functools import wraps
-
-
 app = Flask(__name__)
 
-#edit
 app.config['SECRET_KEY'] = "tsfyguaistyatuis589566875623568956"
 app.config['MAIL_SERVER'] = "smtp.googlemail.com"
 app.config['MAIL_PORT'] = 587
@@ -80,15 +77,6 @@ flow = Flow.from_client_secrets_file(
 
 # Simulate user authentication
 is_authenticated = False
-
-# def login_is_required(function):
-#     def wrapper(*args, **kwargs):
-#         if "google_id" not in session:
-#             return abort(401)  # Authorization required
-#         else:
-#             return function()
-
-#     return wrapper
 
 def login_required(func):
     @wraps(func)
@@ -339,9 +327,6 @@ def create_student_info_collection(db):
 
 
 
-# collection = db[today_date]  # Use the current date as the collection name
-# Create a new collection name for today_data_attendance
-
 def create_attendance_collection(db):
     # today_date=today_date()
     today_date = datetime.now().strftime("%Y-%m-%d")
@@ -362,29 +347,6 @@ def create_attendance_collection(db):
     print(today_data_attendance_collection)  
     return today_data_attendance_collection
 
-
-# def create_attendance_all_collection(db):
-#     # Create a new collection name for attendance_all
-#     roll_number_list = generate_roll_numberlist()
-#     # today_date = today_date()
-#     today_date = datetime.now().strftime("%Y-%m-%d")
-#     attendance_all_collection_name = today_date + "_attendance_all"
-#     attendance_all_collection = db[attendance_all_collection_name]
-#     print(attendance_all_collection)  
-# # sample
-#     # Clear the existing data in the collection
-#     attendance_all_collection.delete_many({})
-
-#     # Iterate through the roll numbers and mark them as absent with a timestamp
-#     for roll_number in roll_number_list:
-#         # Insert each roll number as "Absent" with a timestamp
-#         document = {
-#             "roll_number": roll_number,
-#             "timestamp": datetime.now(),
-#             "remark": "Absent"
-#         }
-#         attendance_all_collection.insert_one(document)
-#     return attendance_all_collection
 
 def create_or_get_attendance_all_collection(db):
     today_date = datetime.now().strftime("%Y-%m-%d")
@@ -445,35 +407,6 @@ def delete_subject():
 
     # Handle errors or redirection if the subject doesn't exist
     return redirect('/explore')
-#'/'
-# @app.route('/edit_subject', methods=['POST'])
-# @login_required
-# def edit_subject():
-#     if request.method == 'POST':
-#         # Get the current subject name and the new subject name from the form
-#         current_name = request.form.get('current_name')
-#         new_name = request.form.get('new_name')
-
-#         # Connect to the MongoDB database
-#         client = MongoClient('mongodb://localhost:27017/')  # Replace with your MongoDB connection string
-#         db = client['subjects']  # Set the database name to "subjects"
-#         subjects_collection = db['subject_collection']
-
-#         # Check if the subject with the current name exists in your database
-#         subject = subjects_collection.find_one({'name': current_name})
-#         if subject:
-#             # If it exists, update the name to the new name
-#             subjects_collection.update_one({'name': current_name}, {'$set': {'name': new_name}})
-            
-#             # Now update the subjects list in your application
-#             subjects = load_subjects_from_database()
-
-#             return render_template('index2.html', subjects=subjects, is_authenticated=is_authenticated)
-
-#     # Handle errors or redirection if the subject doesn't exist
-#     return redirect('/explore')
-
-
 
 
 @app.route('/add_subject', methods=['POST'])
