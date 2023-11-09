@@ -509,10 +509,6 @@ def extract_date_from_collection(collection_name):
     return collection_name.split('_attendance_all')[0]
 
 
-
-
-
-
 # @app.route('/<subjects>/docs', methods=['POST', 'GET'])
 # @login_required
 # def docs(subjects):
