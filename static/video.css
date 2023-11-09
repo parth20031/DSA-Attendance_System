@@ -89,6 +89,7 @@ h1{
 h1:hover{
     -webkit-text-stroke: 2px white;
     color: transparent;
+    transition: 0.5s;
 }
 h2{
     text-decoration: none;
