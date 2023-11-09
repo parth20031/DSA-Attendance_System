@@ -65,7 +65,7 @@ def send_email(email):
         return "The email was not sent."
 
 
-allowed_emails = ["cse220001057@iiti.ac.in", "cse220001056@iiti.ac.in","deshmukhparth293@gmail.com","neerupam26"]
+allowed_emails = ["cse220001057@iiti.ac.in", "cse220001056@iiti.ac.in","deshmukhparth293@gmail.com","neerupam.26@gmail.com"]
 
 app.secret_key = "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"
 

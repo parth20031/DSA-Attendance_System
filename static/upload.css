@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: beige;
+}
+
+.title {
+    color: darkcyan;
+    font-size: 70px;
+    text-align: center;
+    margin: 50px;
+}
+
+.choose {
+    color: darkslateblue;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 530px;
+    margin-right: 20px;
+    font-size: 40px;
+    border-radius: 4px;
+}
+
+.upload {
+    size: 20px;
+    text-align: center;
+    margin-left: 600px;
+    height: 50px;
+    font-size: 30px;
+    width: 200px;
+    border-radius: 4px;
+}
+
+.upload:hover {
+    background-color: rgb(100, 98, 98);
+    color: rgb(246, 242, 242);
+}

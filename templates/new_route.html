@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>New Route</title>
+    <link rel="stylesheet" href="../static/new_route.css">
     <style>
         form {
             display: inline-block;
@@ -9,14 +10,14 @@
     </style>
 </head>
 <body>
-    <h1>Eligible Roll Numbers</h1>
-    <div>
+    <h1 class="title">Eligible Roll Numbers</h1>
+    <div style="margin-left: 30px;">
         {% for roll_number in eligible_roll_numbers %}
-            <p>
+            <p class="box">
                 
-                <span>{{ roll_number }}</span>
+                <span class="rollno">{{ roll_number }}</span>
                 <!-- <a href="/send_email/cse{{roll_number}}@iiti.ac.in">Email</a> -->
-                <a href="/edit_mail/{{roll_number}}">Email</a>
+                <a class="email" href="/edit_mail/{{roll_number}}">Email</a>
             </p>
 
 

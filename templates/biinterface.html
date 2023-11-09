@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/styles.css">
     <link rel="stylesheet" href="../static/biinterface.css">
 </head>
-<body>
+<body class="background-color: aliceblue">
     <header>
         <div class="containertry">
             <nav class="flex">
@@ -19,7 +19,6 @@
                     <li><a href="/{{subjects}}/biinterface">Take Attendence</a></li>
                     <!-- <li><a href="/{{subjects}}/interface">Take Attendence</a></li> -->
                     <li>
-                       
                         <a href="/{{subjects}}/docs">History</a>
                         <!-- <a href="{{ url_for('docs', subjects=subject) }}">History</a> -->
 
@@ -59,27 +58,25 @@
     </header>
 
     <div class="card-container">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+        <div class="card" style="width: 400px; height: 250px; margin-left: 250px; margin-top: 100px; background-color: lightyellow;">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="./interface" class="btn btn-primary">Go somewhere</a>
-              <a href="./upload" class="btn btn-primary">Upload Image</a>
+                <h5 class="card-title" style="color: darkorchid; font-weight: 900; font-size: x-large;">FaceTrack Attendance</h5>
+                <p class="card-text">Upload an image in which you want to mark attendence of students. <p style="font-weight:640">Wait for around 2-3 minutes after uploading 
+                    image and you will get results...... </p></p>
+                <a href="./interface" class="btn btn-primary">Proceed</a>
+                <a href="./upload" class="btn btn-primary">Upload Image</a>
             </div>
-          </div> 
-          <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+        </div> 
+        <div class="card" style="width: 400px; height: 250px; margin-left: 250px; margin-top: 100px; background-color: lightyellow;">
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="./interfacevideo" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title" style="color: darkorchid; font-weight: 900; font-size: x-large;">VidCheck Attendance</h5>
+                <p class="card-text">A prompt will be opened after clicking on this. You can proceed by opening the prompt and then you will get Roll No. of students who are present.</p>
+                <a href="./interfacevideo" class="btn btn-primary">Proceed</a>
             </div>
-          </div>
+        </div>
     </div>
 
 
-  
 <script>
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
