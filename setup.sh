@@ -10,8 +10,8 @@ PYTHON_VERSION=python3.11
 $PYTHON_VERSION -m venv myenv
 source myenv/bin/activate
 
-# Upgrade pip and setuptools
-pip install --upgrade pip setuptools
+# Upgrade pip, setuptools, and wheel
+pip install --upgrade pip setuptools wheel
 
 # Install dependencies from requirements.txt
 pip install -r requirements.txt
