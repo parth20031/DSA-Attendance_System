@@ -12,7 +12,7 @@ if ! command -v $PYTHON_VERSION &> /dev/null; then
   exit 1
 fi
 
-Create virtual environment named 'venv'
+# Create virtual environment named 'venv'
 # $PYTHON_VERSION -m venv venv
 pip install virtualenv
 virtualenv venv
