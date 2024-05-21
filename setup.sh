@@ -18,7 +18,7 @@ pip install virtualenv
 virtualenv venv
 
 # Activate the virtual environment (Windows)
-.\venv\Scripts\activate
+Source .\venv\Scripts\activate
 
 # Upgrade pip, setuptools, and wheel
 pip install --upgrade pip setuptools wheel
