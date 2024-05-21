@@ -20,4 +20,5 @@ pip install -r requirements.txt
 # pip install dlib-19.24.1-cp311-cp311-win_amd64.whl
 
 git clone https://github.com/davisking/dlib
+cd dlib
 python3 setup.py install
