@@ -17,4 +17,7 @@ pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
 # Install dlib from .whl file
-pip install dlib-19.24.1-cp311-cp311-win_amd64.whl
+# pip install dlib-19.24.1-cp311-cp311-win_amd64.whl
+
+git clone https://github.com/davisking/dlib
+python3 setup.py install
