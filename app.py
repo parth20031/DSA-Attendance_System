@@ -444,54 +444,19 @@ def interface(subjects):
     encodings, RollList = encodes
     file.close()
 
-    # Create an empty list to store the RollList[min] values
+
     global roll_list_values 
     interface = cv2.imread("static/interface/newinterface.jpg")
     interface = cv2.resize(interface, (1240, 680))
-    # bl = cv2.imread("interface/blackpage.png")
-    # bl = cv2.resize(bl, (1230 - 800, 670 - 10))
-    # interface[10:670, 800:1230] = bl
 
-
-    # cv2.namedWindow(winname="interface")
-
-
-    # interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
-
-   
-    # ret, frame = cap.read()
     frame=cv2.imread("static/data/attendance.jpg")
     h, w, channels = frame.shape
     frame=cv2.resize(frame,(2*w,2*h))
-    # ph=h
-    # pw=w//2
-    # parts = []
-    # allFacesInParts=[]
-    # encodeAllFacesInParts=[]
-    # for i in range(2):
-            
-                # x_start = i * pw
-                # x_end = (i + 1) * pw
-                # y_start = 0
-                # y_end =ph
-                # part = frame[y_start:y_end, x_start:x_end]
-                # he,we,_=part.shape
-                # part=cv2.resize(part,(2*we,2*he))
 
-                # part=cv2.resize(part,(640,486))
-                # part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
     frame=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
     allFacesInParts=(face_recognition.face_locations(frame))
     encodeAllFacesInParts=face_recognition.face_encodings(frame,face_recognition.face_locations(frame))
-                # parts.append(part)
-    # part=frame[0:ph,w//3:2*w//3]
-    # he,we,_=part.shape
-    # part=cv2.resize(part,(2*we,2*he))
-    # part=cv2.resize(part,(640,486))
-    # part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-    # allFacesInParts.append(face_recognition.face_locations(part))
-    # encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
-    # parts.append(part)
+
     font = cv2.FONT_HERSHEY_SIMPLEX
     for faceloc in allFacesInParts:
                     frame=cv2.rectangle(frame,(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
@@ -521,38 +486,13 @@ def interface(subjects):
 
                 print(roll_value)
         
-    # for i in range(2):
-    #     parts[i]=cv2.resize(parts[i],(pw,ph))
-    # frame = np.zeros((h, w, 3), dtype=np.uint8)
-    # part_index = 0
-    # for i in range(2):
-            
-    #             x_start = i * pw
-    #             x_end = (i + 1) * pw
-    #             y_start = 0
-    #             y_end =  ph
 
-              
-    #             frame[y_start:y_end, x_start:x_end] = parts[part_index]
-    #             part_index += 1
     frame = cv2.resize(frame, (640, 486))
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     interface[116:116 + 486, 127:640 + 127] = frame
-        # interface=cv2.resize(interface,(400,400))
-        # break
-    # _, buffer = cv2.imencode('.png', interface)
-    # attendances = base64.b64encode(buffer).decode()
-    # attendancer=ndarray_to_b64(interface)
-    # _, image_data = cv2.imencode('.png', interface)
+
     cv2.imwrite('static/interface.jpg',interface)
-    # return render_template('interface.html')
-    # cv2.imshow("interface", interface)
-    # cv2.waitKey(0)
-        # if cv2.waitKey(1) == 27 :
-        #     break
-    # print(roll_list_values)
-    # After computing roll_list_values
-    # session['roll_list_values'] = roll_list_values
+
     print(roll_list_values)
 
     return render_template('interface.html',subjects=subjects,roll_list_values=roll_list_values)
@@ -575,54 +515,22 @@ def video(subjects):
     global roll_list_values 
     interface = cv2.imread("static/interface/newinterface.jpg")
     interface = cv2.resize(interface, (1240, 680))
-    # bl = cv2.imread("interface/blackpage.png")
-    # bl = cv2.resize(bl, (1230 - 800, 670 - 10))
-    # interface[10:670, 800:1230] = bl
 
 
-    # cv2.namedWindow(winname="interface")
+
+
     cv2.namedWindow("interface", cv2.WINDOW_NORMAL)
-
-
-    # interface = cv2.rectangle(interface, (127, 116), (640 + 127, 116 + 486), (0, 255, 50), 3)
 
     while True:
 
         ret, frame = cap.read()
-        # frame=cv2.imread("static/data/attendance.jpg")
-        # h, w, channels = frame.shape
-        # ph=h
-        # pw=w//2
-        # parts = []
-        # allFacesInParts=[]
-        # encodeAllFacesInParts=[]
-        # for i in range(2):
-            
-        #         x_start = i * pw
-        #         x_end = (i + 1) * pw
-        #         y_start = 0
-        #         y_end =ph
-        #         part = frame[y_start:y_end, x_start:x_end]
-        #         he,we,_=part.shape
-        #         part=cv2.resize(part,(2*we,2*he))
 
-        #         # part=cv2.resize(part,(640,486))
-        #         part=cv2.cvtColor(part,cv2.COLOR_BGR2RGB)
-        #         allFacesInParts.append(face_recognition.face_locations(part))
-        #         encodeAllFacesInParts.append(face_recognition.face_encodings(part,face_recognition.face_locations(part)))
-        #         parts.append(part)
-        # part=frame[0:ph,w//3:2*w//3]
-        # he,we,_=part.shape
-        # part=cv2.resize(part,(2*we,2*he))
-    # part=cv2.resize(part,(640,486))
         frame=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         allFacesInParts=(face_recognition.face_locations(frame))
         encodeAllFacesInParts=(face_recognition.face_encodings(frame,face_recognition.face_locations(frame)))
         for faceloc in allFacesInParts:
             frame=cv2.rectangle(frame,(faceloc[3],faceloc[0]),(faceloc[1],faceloc[2]),(255,255,0),4)                        
 
-        # parts.append(part)
-        # for i in range(len(allFacesInParts)):
         for encodes in encodeAllFacesInParts:
                 facedis = face_recognition.face_distance(encodings, encodes)
 
@@ -648,40 +556,16 @@ def video(subjects):
                     
 
                 print(roll_value)
-        #video
-        # for i in range(2):
-            # parts[i]=cv2.resize(parts[i],(pw,ph))
-        # frame = np.zeros((h, w, 3), dtype=np.uint8)
 
-        # part_index = 0
-        # for i in range(2):
-            
-        #         x_start = i * pw
-        #         x_end = (i + 1) * pw
-        #         y_start = 0
-        #         y_end =  ph
-
-              
-        #         frame[y_start:y_end, x_start:x_end] = parts[part_index]
-        #         part_index += 1
         frame = cv2.resize(frame, (640, 486))
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         interface[116:(116 + 486), 127:(640 + 127)] = frame
-        # interface=cv2.resize(interface,(400,400))
-        # break
-    # _, buffer = cv2.imencode('.png', interface)
-    # attendances = base64.b64encode(buffer).decode()
-    # attendancer=ndarray_to_b64(interface)
-    # _, image_data = cv2.imencode('.png', interface)
-    # cv2.imwrite('static/interface.jpg',interface)
-    # return render_template('interface.html')
+
         cv2.imshow("interface", interface)
     # cv2.waitKey(0)
         if cv2.waitKey(1) == 27 or cv2.getWindowProperty("interface", cv2.WND_PROP_VISIBLE) < 1:
             break
-    # print(roll_list_values)
-    # After computing roll_list_values
-    # session['roll_list_values'] = roll_list_values
+
     print(roll_list_values)
     return render_template('biinterface.html',subjects=subjects)
     # return render_template('interface.html',subjects=subjects,roll_list_values=roll_list_values)
